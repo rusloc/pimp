@@ -2207,6 +2207,13 @@ input::-moz-focus-inner {
     margin : 0;
 }
 
+.header__logo p {
+    width  : 250px;
+    height : 50px;
+    margin : 0;
+    padding-bottom: 70px;
+}
+
 .mainLogo {
     font-weight: 900;
     color: #fff;
@@ -2730,7 +2737,7 @@ input::-moz-focus-inner {
 }
 
 .search-form::after {
-    content        : "Press Enter to begin your search.";
+    content        : "You can find me in Telegram by searching for @cirob";
     display        : block;
     letter-spacing : 0.6px;
     font-size      : 1.6rem;
