@@ -2211,7 +2211,7 @@ input::-moz-focus-inner {
     width  : 250px;
     height : 50px;
     margin : 0;
-    padding-bottom: 70px;
+    padding-bottom: 60px;
 }
 
 .mainLogo {
@@ -2491,7 +2491,7 @@ input::-moz-focus-inner {
 }
 .header__social .ss-upwork a::after {
     background-image : url(../images/icons/social/upwork_white.svg);
-    transform: scale(1.5) translate(-4px,-3px);
+    transform: scale(1.5) translate(-4px,-4px);
 }
 
 /* 
