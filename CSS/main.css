@@ -98,19 +98,20 @@ body.ss-bg-white {
  * ## links
  * ------------------------------------------------------------------- */
 a {
-    color      : #33998a;
+    color      : #ff0000;
     transition : all 0.3s ease-in-out;
 }
 
 a:hover,
 a:focus,
 a:active {
-    color : #da5260;
+    color : #ff0019;
 }
 
 a:hover,
 a:active {
     outline : 0;
+    font-weight: 700;
 }
 
 
@@ -1788,6 +1789,7 @@ input::-moz-focus-inner {
     line-height   : 1.231;
     margin-top    : 0;
     margin-bottom : .8rem;
+    font-weight: 500;
 }
 
 .masonry .entry__title a {
@@ -1796,7 +1798,8 @@ input::-moz-focus-inner {
 
 .masonry .entry__title a:hover,
 .masonry .entry__title a:focus {
-    color : #267367;
+    color : #ff0000;
+    font-weight: 500;
 }
 
 .masonry .entry__excerpt {
@@ -2891,7 +2894,7 @@ body.search-is-visible {
 
 .search-trigger:focus,
 .search-trigger:hover {
-    color : #33998a;
+    color : #998f33;
 }
 
 .search-trigger svg {
