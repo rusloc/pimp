@@ -130,6 +130,13 @@
                 
                 <article class="column large-full entry format-standard">
 
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            Funnel chart to track time utilization (with real interactive report in Power BI). 
+                        </h1>
+
+                    </div> 
+
                     <!-- <div class="media-wrap entry__media">
                         <div class="entry__post-thumb">
                             <img src="../images/thumbs/time_funnel/funnel_chart_preview_1000.png" 
@@ -138,19 +145,6 @@
                                  ../images/thumbs/time_funnel/funnel_chart_preview_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
                             </div>
                     </div> -->
-
-                    <div class="content__page-header entry__header">
-                        <h1 class="display-1 entry__title">
-                            Funnel chart to track time utilization.
-                        </h1>
-                        <!-- <ul class="entry__header-meta">
-                            <li class="author">By <a href="#0">Jonathan Doe</a></li>
-                            <li class="date">April 30, 2019</li>
-                            <li class="cat-links">
-                                <a href="#0">Marketing</a><a href="#0">Management</a>
-                            </li>
-                        </ul> -->
-                    </div> 
                     
                     <!-- end entry__header -->
 
@@ -179,7 +173,9 @@
                             
                         </p>
                         <p>
-                            Below is the actual (interactive) report. Note there s no MOBILE view available, so better open your desktop/laptop and try it out.
+                            <b>* Below is the actual (interactive) report. Note there s no MOBILE view available, 
+                                so better open your desktop/laptop and try it out (though it still will work on your mobile device).
+                            </b>
                         </p>
 
                         <div class="lity-iframe-container">
@@ -187,10 +183,10 @@
                             <iframe title="Time unitilaztion" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiY2M3YzU2MjAtNjdlOC00NGU2LThlMTItMzc2MTE2Yjk0MDlkIiwidCI6IjBjZWM3Mzk3LWE0MDQtNDMwZi04MmQzLWQzMzIyZjdlZmM2OCIsImMiOjl9&embedImagePlaceholder=true" frameborder="0" allowFullScreen="true"></iframe>
                             </center>
                         </div>
-                        <h2>Model</h2>
+                        <h3>Model</h3>
     
                         <p>
-                            First we need to layout and structure the Fact table (actually Fact and two Plan table since there are two types of plan).
+                            First we need to layout and structure the <b>Fact table</b> (actually Fact and two Plan table since there are two types of plan).
                             The Fact/Plan table looks like this:
 
                         </p>
@@ -206,55 +202,87 @@
                             </thead>
                             <tbody>
                               <tr>
-                                <td data-label="Account">Visa - 3412</td>
-                                <td data-label="Due Date">04/01/2016</td>
-                                <td data-label="Amount">$1,190</td>
-                                <td data-label="Period">03/01/2016 - 03/31/2016</td>
+                                <td data-label="_vehicleID">LDR-1250-SP-3068</td>
+                                <td data-label="_date">04/01/2023</td>
+                                <td data-label="_idleCategory">Total time</td>
+                                <td data-label="_duration">86 400</td>
                               </tr>
                               <tr>
-                                <td scope="row" data-label="Account">Visa - 6076</td>
-                                <td data-label="Due Date">03/01/2016</td>
-                                <td data-label="Amount">$2,443</td>
-                                <td data-label="Period">02/01/2016 - 02/29/2016</td>
+                                <td data-label="_vehicleID">Visa - 6076</td>
+                                <td data-label="_date">14/05/2032</td>
+                                <td data-label="_idleCategory">Maintenance</td>
+                                <td data-label="_duration">4 804</td>
                               </tr>
                             </tbody>
                           </table>
+                          <center><p>...</p></center>
+                          <p>
+                            So basically we need 4 columns: _vehicleID (the unique identifier of a vehicle), _date (the day when we capture time spent by category)
+                            , _idleCategory (category ID or NAME when vehicle was doing something) and _duration (in Seconds, Hours or whatever you want to use).
+                            We need one line for every day for every vehicle to calculate total time available (it would be 86 400 sec or 24 hours).
+                            </p>
+
+                        <p>
+                            So with these 3 tables setup (fact, weekly plan, monthly plan) we now need a few more tables to build a model:
+                        </p>
+                        
+                        <ul>
+                            <li>A link table for Fact (since there are a lot of low level categories in Fact table 
+                                we need to group them into more high level categories)</li>
+                            <li>A link table for Weekly Plan (the same idea with categories for both plan tables)</li>
+                            <li>A link table for Monthly Plan (the same idea with categories for both plan tables)</li>
+                            <li>High level Idles table (we will use this table to create categories in the chart)</li>
+                            <li>A Calendar table</li>
+                            <li>Dimension table with vehicles and their corresponding fields and offices</li>
+                        </ul>
+                        <p>
+                            I used intermediary tables for Fact/Plan since some idle categories in Fact and Plan did not match. 
+                            And also it was easier to work with separate intermediary tables when debugging.
+                        </p>
+
     
                         <blockquote>
                             <p>
-                            For God so loved the world, that he gave his only Son, that whoever believes in 
-                            him should not perish but have eternal life. For God did not send his Son into 
-                            the world to condemn the world, but in order that the world might be 
-                            saved through him.
+                            As a little side note: for this report i had to create a custom Calendar table with business week starting on Saturday
+                            and ending on Friday. In one of my next blog posts i will share my solution in <b>PowerQuery M code</b>.
                             </p>
-                            <cite>John 3:16-17 ESV</cite>
                         </blockquote>
     
                         <p>
-                        Odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque 
-                        corrupti dolores et quas molestias excepturi sint occaecati cupiditate non provident, 
-                        similique sunt in culpa. Aenean eu leo quam. Pellentesque ornare sem lacinia quam 
-                        venenatis vestibulum. Nulla vitae elit libero, a pharetra augue laboris in sit minim 
-                        cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing 
-                        in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.
+                            So basically having all our tables loaded into model we just need to link them together:
+                            <ul>
+                                <li>Fact > Fact (link table) > Idles table</li>
+                                <li>Weekly plan > Weekly plan (link table) > Idles table</li>
+                                <li>Monthly plan > Monthly plan (link table) > Idles table</li>
+                                <li>Calendar >>> Fact, Plan tables (Calendar links to all fact, plan tables)</li>
+                                <li>Dimension table with vehicles >>> Fact/Plan tables</li>
+                            </ul>
                         </p>
     
-                        <h3>Smaller Heading</h3>
+                        <h3>Measures</h3>
     
                         <p>
-                        Odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque 
-                        corrupti dolores et quas molestias excepturi sint occaecati cupiditate non provident, 
-                        similique sunt in culpa. Aenean eu leo quam. Pellentesque ornare sem lacinia quam 
-                        venenatis vestibulum. Nulla vitae elit libero, a pharetra augue laboris in sit minim 
-                        cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing 
-                        in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.
+                        To solve the problem we need to remember a few things:
                         </p>
 
-<pre><code class="language-css">
-    import pandas as pd
-    print('hello world!')
+                        <ul>
+                            <li>To have a category plotted on a chart axis - it must be physically present in a table</li>
+                            <li>We would need three Measures to create the funnel chart:
+                                <ul>
+                                    <li>Calculate total time spent for <b>ordinary categories</b></li>
+                                    <li>Calculate <b>breakpoints</b></li>
+                                    <li>Calculate bars that will <b>fill blank space</b></li>
+                                </ul>
+                            </li>
+                            <li>Dimension table with vehicles >>> Fact/Plan tables</li>
+                        </ul>
 
-</code></pre>
+<pre>
+    <code class="language-css">
+        import pandas as pd
+        print('hello world!')
+    </code>
+</pre>
 
                         <p>
                         Odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque 
