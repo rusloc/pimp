@@ -5,7 +5,7 @@
     <!--- basic page needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>Standard Post - Typerite</title>
+    <title>Time utilization funnel chart</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -152,24 +152,28 @@
 
                         <p class="lead drop-cap">
                         This report was created for a real client, a coal mining company. All numbers were modified to hide metrics.
-                        In this post i show my approach to creating a funnel chart that shows time utilization of a mining company.
-                        This chart was created using basic (default) chart available in Power BI (Stacked bar chart).
+                        In this post i show my approach to creating a funnel chart that shows time utilization.
+                        Dashboard utilizes basic (default) chart available in Power BI (Stacked bar chart).
                         Further i will explain how i built this.
                         </p>
 
                         <p>
                         
                             The idea (and requirements) was to build a funnel that flows from top to bottom. It starts with total available time
-                            (as percentage of total 24/7 time available eg. 100%) and then deducts time spent on each category (also as percentage of total available time). 
+                            (as percentage of total 24/7 time available eg. 100%) and then deducts time spent on each category 
+                            (also as percentage of total available time). 
+                            <br><br>
                             A little twist here was to add a few 
-                            break points that show stages of mining equipment readiness. 
+                            <b>breakpoints</b> that show stages of mining equipment readiness. 
+                            <br><br>
                             For expample there s a "Ready for work" stage that assumes all main 
                             technical maintenance is done and managers can view the time (as percentage of total) equipment (heavy duty loaders) 
                             can operate in field.
 
                             The next stage "Effective work time" is a break point metric that shows how much (in %%) the loader was actually busy with main work.
-
-                            Let me show you how i handle this requirements and turn data into chart.
+                            <br><br>
+                            Another little twist was to add <b>switcher</b> to view linear or weighted average (weighted by the excavator  ladle volume) 
+                            time utilization.
                             
                         </p>
                         <p>
@@ -274,8 +278,12 @@
                                     <li>Calculate bars that will <b>fill blank space</b></li>
                                 </ul>
                             </li>
-                            <li>Dimension table with vehicles >>> Fact/Plan tables</li>
                         </ul>
+                        <p>
+                            Lets start with the measures: calculate (sum up) time spent for each ordinary category.
+                            
+                        </p>
+
 
 <pre>
     <code class="language-css">
