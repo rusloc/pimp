@@ -280,47 +280,82 @@
                             </li>
                         </ul>
                         <p>
-                            Lets start with the measures: calculate (sum up) time spent for each ordinary category.
+                            Lets start with the measure: calculate (sum up) time spent for each <b>ordinary categories</b>.
                             
                         </p>
 
 
 <pre>
     <code class="language-css">
-        import pandas as pd
-        print('hello world!')
+        _weightedAverageIdleTime = 
+
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+        VAR _base = ADDCOLUMNS(
+                        SUMMARIZE('_vehiclesDIM',
+                            '_vehiclesDIM'[_vehicleName]),
+                    "@vol",
+                        CALCULATE(
+                            MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+                    "@active",
+                        CALCULATE(
+                            MAXX('_FACT','_FACT'[_active]),
+                            ALL('_idlesDIM')),
+                    "@hours",
+                        SWITCH(TRUE(),
+                            _breakPoint = 6,
+                                CALCULATE(
+                                    SUMX(
+                                        FILTER('_FACT',
+                                            '_FACT'[_active] = 1),
+                                        '_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                    '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                            _breakPoint = 24,
+                                CALCULATE(
+                                    SUMX(
+                                        FILTER('_FACT',
+                                            '_FACT'[_active] = 1),
+                                        '_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                    '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                            _breakPoint = 27,
+                                CALCULATE(
+                                    SUMX(
+                                        FILTER('_FACT',
+                                            '_FACT'[_active] = 1),
+                                        '_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                    '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25})) / 3600,
+                            CALCULATE(
+                                SUMX(
+                                    FILTER('_FACT',
+                                        '_FACT'[_active] = 1),
+                                    '_FACT'[duration])) / 3600),
+                    "@totalHours",
+                            CALCULATE(
+                                SUM('_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+                            FILTER(_base,
+                                [@active] = 1),
+                            "@percent",
+                            SWITCH(TRUE(),
+                                _breakPoint in {6,24,27},
+                                    1 - ([@hours] / [@totalHours]),
+                                [@hours] / [@totalHours]))
+                                
+        RETURN
+        
+        SWITCH(TRUE(),
+            _breakPoint IN {6,24,27},
+                0,
+            DIVIDE(
+                SUMX(_percent, [@percent] * [@vol]),
+                SUMX(_percent, [@vol])))
     </code>
 </pre>
 
-                        <p>
-                        Odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque 
-                        corrupti dolores et quas molestias excepturi sint occaecati cupiditate non provident, 
-                        similique sunt in culpa. Aenean eu leo quam. Pellentesque ornare sem lacinia quam 
-                        venenatis vestibulum. Nulla vitae elit libero, a pharetra augue laboris in sit minim 
-                        cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing 
-                        in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.
-                        </p>
-        
-                        <ul>
-                            <li>Donec nulla non metus auctor fringilla.
-                                <ul>
-                                    <li>Lorem ipsum dolor sit amet.</li>
-                                    <li>Lorem ipsum dolor sit amet.</li>
-                                    <li>Lorem ipsum dolor sit amet.</li>
-                                </ul>
-                            </li>
-                            <li>Donec nulla non metus auctor fringilla.</li>
-                            <li>Donec nulla non metus auctor fringilla.</li>
-                        </ul>
-        
-                        <p>
-                        Odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque 
-                        corrupti dolores et quas molestias excepturi sint occaecati cupiditate non provident, 
-                        similique sunt in culpa. Aenean eu leo quam. Pellentesque ornare sem lacinia quam 
-                        venenatis vestibulum. Nulla vitae elit libero, a pharetra augue laboris in sit minim 
-                        cupidatat ut dolor voluptate enim veniam consequat occaecat fugiat in adipisicing 
-                        in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.
-                        </p>
 
                     </div> <!-- end entry content -->
 

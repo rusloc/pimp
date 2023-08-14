@@ -1548,7 +1548,7 @@ pre[class*="language-"] {
     background      : none;
     text-shadow     : 0 1px rgba(0, 0, 0, 0.3);
     font-family     : Consolas, "Andale Mono", Courier, "Courier New", monospace;
-    font-size       : 1.7rem;
+    font-size       : 1rem;
     text-align      : left;
     white-space     : pre;
     word-spacing    : normal;
