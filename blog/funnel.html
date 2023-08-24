@@ -187,7 +187,7 @@
                             <iframe title="Time unitilaztion" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiY2M3YzU2MjAtNjdlOC00NGU2LThlMTItMzc2MTE2Yjk0MDlkIiwidCI6IjBjZWM3Mzk3LWE0MDQtNDMwZi04MmQzLWQzMzIyZjdlZmM2OCIsImMiOjl9&embedImagePlaceholder=true" frameborder="0" allowFullScreen="true"></iframe>
                             </center>
                         </div>
-                        <h3>Model</h3>
+                        <h2>Model</h2>
     
                         <p>
                             First we need to layout and structure the <b>Fact table</b> (actually Fact and two Plan table since there are two types of plan).
@@ -263,7 +263,7 @@
                             </ul>
                         </p>
     
-                        <h3>Measures</h3>
+                        <h2>Measures</h2>
     
                         <p>
                         To solve the problem we need to remember a few things:
@@ -279,18 +279,97 @@
                                 </ul>
                             </li>
                         </ul>
+                        <h3>Odrinary categories time calculation</h3>
                         <p>
-                            Lets start with the measure: calculate (sum up) time spent for each <b>ordinary categories</b> (linear time utilization).
+                            Lets start with the measure: calculate (sum up) time spent for each <b>ordinary category</b> (linear time utilization).
                             
                         </p>
 
 
 <pre>
     <code class="language-css">
-
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+        VAR _base = ADDCOLUMNS(
+                        SUMMARIZE('_vehiclesDIM',
+                            '_vehiclesDIM'[_vehicleName]),
+                    "@active",
+                        CALCULATE(
+                            MAXX('_FACT','_FACT'[_active]),
+                            REMOVEFILTERS('_idlesDIM'[idle_model_category])),
+                    "@hours",
+                            CALCULATE(
+                                SUMX(
+                                    FILTER('_FACT',
+                                        '_FACT'[_active] = 1),
+                                    '_FACT'[duration])) / 3600,
+                    "@totalHours",
+                            CALCULATE(
+                                SUM('_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+                            _base,
+                            "@percent",
+                                [@hours] / [@totalHours])
+        RETURN
+        
+        SWITCH(TRUE(),
+            _breakPoint IN {1,6,24,27},0,
+            DIVIDE(
+                        SUMX(_percent, [@hours]),
+                        SUMX(_percent, [@totalHours])))
     </code>
 </pre>
 
+                            <p>
+                                Next lets calculate time utilization for <b>ordinary categories</b> but with a twist (<b>weighted average</b>: excavators ladle volumes
+                                will act as weights)
+                                
+                            </p>
+
+                            <pre>
+                                <code class="language-css">
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+
+        VAR _base = ADDCOLUMNS(
+                        SUMMARIZE('_vehiclesDIM',
+                            '_vehiclesDIM'[_vehicleName]),
+                    "@vol",
+                        CALCULATE(
+                            MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+                    "@active",
+                        CALCULATE(
+                            MAXX('_FACT','_FACT'[_active]),
+                            ALL('_idlesDIM')),
+                    "@hours",
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration])) / 3600,
+                    "@totalHours",
+                            CALCULATE(
+                                SUM('_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+                            FILTER(_base,
+                                [@active] = 1),
+                            "@percent",
+                                [@hours] / [@totalHours]))
+                                
+        RETURN
+        
+        SWITCH(TRUE(),
+            _breakPoint IN {6,24,27},
+                0,
+            DIVIDE(
+                SUMX(_percent, [@percent] * [@vol]),
+                SUMX(_percent, [@vol])))
+                                </code>
+                            </pre>
+
+                            <h3>Breakpoints time calculation</h3>
 
                     </div> <!-- end entry content -->
 
