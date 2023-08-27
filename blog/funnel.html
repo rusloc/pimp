@@ -282,7 +282,7 @@
                         <h3>Odrinary categories time calculation</h3>
                         <p>
                             Lets start with the measure: calculate (sum up) time spent for each <b>ordinary category</b> (linear time utilization).
-                            
+                            Then get to the weighted average measure. And after we ll run through the logic.
                         </p>
 
 
@@ -307,17 +307,14 @@
                                 SUM('_FACT'[duration]),
                                     FILTER(ALL('_idlesDIM'),
                                 '_idlesDIM'[Sorting] = 1)) / 3600)
-        VAR _percent = ADDCOLUMNS(
-                            _base,
-                            "@percent",
-                                [@hours] / [@totalHours])
+
         RETURN
         
         SWITCH(TRUE(),
             _breakPoint IN {1,6,24,27},0,
             DIVIDE(
-                        SUMX(_percent, [@hours]),
-                        SUMX(_percent, [@totalHours])))
+                        SUMX(_base, [@hours]),
+                        SUMX(_base, [@totalHours])))
     </code>
 </pre>
 
@@ -369,8 +366,165 @@
                                 </code>
                             </pre>
 
-                            <h3>Breakpoints time calculation</h3>
+                    <p>
+                        So the logic in these two measures is pretty much the same:
+                        <ul>
+                            <li>In the VAR called <b>_breakPoint</b> we capture the current item on the plot (eg Total time, maintenance, Conservation etc) that will be used in the RETURN statement</li>
+                            <li>VAR _base is the <b>virtual table</b> where we add columns with attributes:
+                                <ul>
+                                    <li>First we get unique values of excavators</li>
+                                    <li>Then we add attribute @active which will show if the excavator was active during selected period</li>
+                                    <li>Another attribute will be @hours where we sum up hours from the fact/plan table</li>
+                                    <li>And finally we need total hours of work in @totalHours column</li>
+                                </ul>
+                            </li>
+                            <li>In the return statement we calculate the percentage of Hours spent in each category to Total hours</li>
+                        </ul>
+                    </p>
+                    <p>
+                        Difference between the linear calculation and weighted is the following:
+                        <ul>
+                            <li>We need one more table to filter out excavators which may break the logic of calculation with their zero time (because they have laddle volume)</li>
+                            <li>and in the return statement we use the weighted average formula instead of linear one</li>
+                        </ul>
+                    </p>
+                    <p>
+                        So it turns out to be not that hard. Now lets breakdown the measure for <b>breakpoints</b> that have different color and logic in the chart.
+                    </p>
 
+                            <h3>Breakpoints time calculation</h3>
+                            <pre>
+                                <code class="language-css">
+        
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+
+        VAR _base = ADDCOLUMNS(
+                SUMMARIZE('_vehiclesDIM',
+                    '_vehiclesDIM'[_vehicleName]),
+            "@vol",
+                CALCULATE(
+                    MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+            "@active",
+                CALCULATE(
+                    MAXX('_FACT','_FACT'[_active]),
+                    ALL('_idlesDIM')),
+            "@hours",
+                SWITCH(TRUE(),
+                    _breakPoint = 6,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                    _breakPoint = 24,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                    _breakPoint = 27,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25,26})) / 3600,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration])) / 3600),
+            "@totalHours",
+                    CALCULATE(
+                        SUM('_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+					FILTER(_base,
+                        [@active] = 1),
+                    "@percent",
+                    SWITCH(TRUE(),
+                        _breakPoint IN {6,24,27},
+                            1 - ([@hours] / [@totalHours]),
+                        [@hours] / [@totalHours]))
+        RETURN
+            SWITCH(TRUE(),
+                _breakPoint = 1,
+                    DIVIDE(
+                        SUMX(_percent, [@hours]),
+                        SUMX(_percent, [@totalHours])),
+                _breakPoint IN {6,24,27},
+                    IF(
+                        ISBLANK(SUMX(_percent,[@totalHours])),
+                            0,
+                        DIVIDE(
+                            SUMX(_percent, [@percent] * [@vol]),
+                            SUMX(_percent, [@vol]))),
+                BLANK())
+                                
+    
+    </code>
+    </pre>
+
+    <p>
+        So calculation of <b>breakpoint</b> is a bit more trickier but still follows the same logic as above measures:
+        
+    </p>
+    <p>
+                    <ul>
+                        <li>We need a breakpoint captured in VAR</li>
+                        <li>Then we create a virtual table and add attributes</li>
+                        <li>In <b>@hours</b> attribute we add some logic to calculate breakpoints: with a SWITCH function we check if it s a breakpoint and then calculate all the hours
+                            for ordinary categories in total prior to that breakpoint
+                        </li>
+                        <li>In addition we need one more virtual table based on the previous one (VAR _percent): there we need to calculate how much in percentage did that breakpoint cost 
+                            compared to Total time
+                        </li>
+                        <li>In the RETURN statement we add more logic: calculating the very first bar on the chart and making calculations only for breakpoints skipping ordinary categories</li>
+                    </ul>
+    </p>
+
+                            <h3>Calculating blank bars</h3>
+
+                <p>
+                    We need one more measure to calculate bars that will just occupy space and leave the visible bars "hanging in the air" and making a waterfall.
+                </p>
+<pre>
+    <code class="language-css">
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+        VAR _base = ADDCOLUMNS(
+                        SUMMARIZE('_vehiclesDIM',
+                            '_vehiclesDIM'[_vehicleName]),
+                    "@active",
+                        CALCULATE(
+                            MAXX('_FACT','_FACT'[_active]),
+                            REMOVEFILTERS('_idlesDIM'[idle_model_category])),
+                    "@hours",
+                            CALCULATE(
+                                SUMX(
+                                    FILTER('_FACT',
+                                        '_FACT'[_active] = 1),
+                                    '_FACT'[duration])) / 3600,
+                    "@totalHours",
+                            CALCULATE(
+                                SUM('_FACT'[duration]),
+                                    FILTER(ALL('_idlesDIM'),
+                                '_idlesDIM'[Sorting] = 1)) / 3600)
+
+        RETURN
+        
+        SWITCH(TRUE(),
+            _breakPoint IN {1,6,24,27},0,
+            DIVIDE(
+                        SUMX(_base, [@hours]),
+                        SUMX(_base, [@totalHours])))
+    </code>
+</pre>
                     </div> <!-- end entry content -->
 
                 </article> <!-- end column large-full entry-->
