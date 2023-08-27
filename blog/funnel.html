@@ -221,8 +221,12 @@
                           </table>
                           <center><p>...</p></center>
                           <p>
-                            So basically we need 4 columns: _vehicleID (the unique identifier of a vehicle), _date (the day when we capture time spent by category)
-                            , _idleCategory (category ID or NAME when vehicle was doing something) and _duration (in Seconds, Hours or whatever you want to use).
+                            So basically we need 4 columns: 
+                            <li><b>_vehicleID</b> (the unique identifier of a vehicle)</li> 
+                            <li><b>_date</b> (the day when we capture time spent by category)</li>
+                            <li><b>_idleCategory</b> (category ID or NAME when vehicle was doing something, i called it _originalCat on the diagram below)</li>
+                            <li><b>_duration</b> (in Seconds, Hours or whatever you want to use)</li>
+                            <br>
                             We need one line for every day for every vehicle to calculate total time available (it would be 86 400 sec or 24 hours).
                             </p>
 
@@ -262,6 +266,17 @@
                                 <li>Dimension table with vehicles >>> Fact/Plan tables</li>
                             </ul>
                         </p>
+                        
+                        <p>
+                            Finaly the basic skeleton of the model would look like this:
+                        </p>
+                        <div class="media-wrap">
+                            <div>
+                                <img src="../blog/images/funnel/funnel data model 1200.jpg" srcset="../blog/images/funnel/funnel data model 1200.jpg 1200w, 
+                                ../blog/images/funnel/funnel data model 800.jpg 800w, 
+                                ../blog/images/funnel/funnel data model 500.jpg 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                        </div>
     
                         <h2>Measures</h2>
     
@@ -288,33 +303,33 @@
 
 <pre>
     <code class="language-css">
-        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
-        VAR _base = ADDCOLUMNS(
-                        SUMMARIZE('_vehiclesDIM',
-                            '_vehiclesDIM'[_vehicleName]),
-                    "@active",
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+    VAR _base = ADDCOLUMNS(
+                    SUMMARIZE('_vehiclesDIM',
+                        '_vehiclesDIM'[_vehicleName]),
+                "@active",
+                    CALCULATE(
+                        MAXX('_FACT','_FACT'[_active]),
+                        REMOVEFILTERS('_idlesDIM'[idle_model_category])),
+                "@hours",
                         CALCULATE(
-                            MAXX('_FACT','_FACT'[_active]),
-                            REMOVEFILTERS('_idlesDIM'[idle_model_category])),
-                    "@hours",
-                            CALCULATE(
-                                SUMX(
-                                    FILTER('_FACT',
-                                        '_FACT'[_active] = 1),
-                                    '_FACT'[duration])) / 3600,
-                    "@totalHours",
-                            CALCULATE(
-                                SUM('_FACT'[duration]),
-                                    FILTER(ALL('_idlesDIM'),
-                                '_idlesDIM'[Sorting] = 1)) / 3600)
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration])) / 3600,
+                "@totalHours",
+                        CALCULATE(
+                            SUM('_FACT'[duration]),
+                                FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] = 1)) / 3600)
 
-        RETURN
-        
-        SWITCH(TRUE(),
-            _breakPoint IN {1,6,24,27},0,
-            DIVIDE(
-                        SUMX(_base, [@hours]),
-                        SUMX(_base, [@totalHours])))
+    RETURN
+
+    SWITCH(TRUE(),
+        _breakPoint IN {1,6,24,27},0,
+        DIVIDE(
+                    SUMX(_base, [@hours]),
+                    SUMX(_base, [@totalHours])))
     </code>
 </pre>
 
@@ -326,45 +341,46 @@
 
                             <pre>
                                 <code class="language-css">
-        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
 
-        VAR _base = ADDCOLUMNS(
-                        SUMMARIZE('_vehiclesDIM',
-                            '_vehiclesDIM'[_vehicleName]),
-                    "@vol",
+    VAR _base = ADDCOLUMNS(
+                    SUMMARIZE('_vehiclesDIM',
+                        '_vehiclesDIM'[_vehicleName]),
+                "@vol",
+                    CALCULATE(
+                        MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+                "@active",
+                    CALCULATE(
+                        MAXX('_FACT','_FACT'[_active]),
+                        ALL('_idlesDIM')),
+                "@hours",
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration])) / 3600,
+                "@totalHours",
                         CALCULATE(
-                            MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
-                    "@active",
-                        CALCULATE(
-                            MAXX('_FACT','_FACT'[_active]),
-                            ALL('_idlesDIM')),
-                    "@hours",
-                        CALCULATE(
-                            SUMX(
-                                FILTER('_FACT',
-                                    '_FACT'[_active] = 1),
-                                '_FACT'[duration])) / 3600,
-                    "@totalHours",
-                            CALCULATE(
-                                SUM('_FACT'[duration]),
-                                    FILTER(ALL('_idlesDIM'),
-                                '_idlesDIM'[Sorting] = 1)) / 3600)
-        VAR _percent = ADDCOLUMNS(
-                            FILTER(_base,
-                                [@active] = 1),
-                            "@percent",
-                                [@hours] / [@totalHours]))
-                                
-        RETURN
-        
-        SWITCH(TRUE(),
-            _breakPoint IN {6,24,27},
-                0,
-            DIVIDE(
-                SUMX(_percent, [@percent] * [@vol]),
-                SUMX(_percent, [@vol])))
-                                </code>
-                            </pre>
+                            SUM('_FACT'[duration]),
+                                FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] = 1)) / 3600)
+    VAR _percent = ADDCOLUMNS(
+                        FILTER(_base,
+                            [@active] = 1),
+                        "@percent",
+                            [@hours] / [@totalHours]))
+                            
+    RETURN
+    
+    SWITCH(TRUE(),
+        _breakPoint IN {6,24,27},
+            0,
+        DIVIDE(
+            SUMX(_percent, [@percent] * [@vol]),
+            SUMX(_percent, [@vol])))
+
+                 </code>
+            </pre>
 
                     <p>
                         So the logic in these two measures is pretty much the same:
@@ -396,76 +412,76 @@
                             <pre>
                                 <code class="language-css">
         
-        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
 
-        VAR _base = ADDCOLUMNS(
-                SUMMARIZE('_vehiclesDIM',
-                    '_vehiclesDIM'[_vehicleName]),
-            "@vol",
-                CALCULATE(
-                    MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
-            "@active",
-                CALCULATE(
-                    MAXX('_FACT','_FACT'[_active]),
-                    ALL('_idlesDIM')),
-            "@hours",
-                SWITCH(TRUE(),
-                    _breakPoint = 6,
-                        CALCULATE(
-                            SUMX(
-                                FILTER('_FACT',
-                                    '_FACT'[_active] = 1),
-                                '_FACT'[duration]),
-                            FILTER(ALL('_idlesDIM'),
-                            '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
-                    _breakPoint = 24,
-                        CALCULATE(
-                            SUMX(
-                                FILTER('_FACT',
-                                    '_FACT'[_active] = 1),
-                                '_FACT'[duration]),
-                            FILTER(ALL('_idlesDIM'),
-                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
-                    _breakPoint = 27,
-                        CALCULATE(
-                            SUMX(
-                                FILTER('_FACT',
-                                    '_FACT'[_active] = 1),
-                                '_FACT'[duration]),
-                            FILTER(ALL('_idlesDIM'),
-                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25,26})) / 3600,
+    VAR _base = ADDCOLUMNS(
+            SUMMARIZE('_vehiclesDIM',
+                '_vehiclesDIM'[_vehicleName]),
+        "@vol",
+            CALCULATE(
+                MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+        "@active",
+            CALCULATE(
+                MAXX('_FACT','_FACT'[_active]),
+                ALL('_idlesDIM')),
+        "@hours",
+            SWITCH(TRUE(),
+                _breakPoint = 6,
                     CALCULATE(
                         SUMX(
                             FILTER('_FACT',
                                 '_FACT'[_active] = 1),
-                            '_FACT'[duration])) / 3600),
-            "@totalHours",
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                _breakPoint = 24,
                     CALCULATE(
-                        SUM('_FACT'[duration]),
-                            FILTER(ALL('_idlesDIM'),
-                        '_idlesDIM'[Sorting] = 1)) / 3600)
-        VAR _percent = ADDCOLUMNS(
-					FILTER(_base,
-                        [@active] = 1),
-                    "@percent",
-                    SWITCH(TRUE(),
-                        _breakPoint IN {6,24,27},
-                            1 - ([@hours] / [@totalHours]),
-                        [@hours] / [@totalHours]))
-        RETURN
-            SWITCH(TRUE(),
-                _breakPoint = 1,
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                _breakPoint = 27,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25,26})) / 3600,
+                CALCULATE(
+                    SUMX(
+                        FILTER('_FACT',
+                            '_FACT'[_active] = 1),
+                        '_FACT'[duration])) / 3600),
+        "@totalHours",
+                CALCULATE(
+                    SUM('_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                    '_idlesDIM'[Sorting] = 1)) / 3600)
+    VAR _percent = ADDCOLUMNS(
+                FILTER(_base,
+                    [@active] = 1),
+                "@percent",
+                SWITCH(TRUE(),
+                    _breakPoint IN {6,24,27},
+                        1 - ([@hours] / [@totalHours]),
+                    [@hours] / [@totalHours]))
+    RETURN
+        SWITCH(TRUE(),
+            _breakPoint = 1,
+                DIVIDE(
+                    SUMX(_percent, [@hours]),
+                    SUMX(_percent, [@totalHours])),
+            _breakPoint IN {6,24,27},
+                IF(
+                    ISBLANK(SUMX(_percent,[@totalHours])),
+                        0,
                     DIVIDE(
-                        SUMX(_percent, [@hours]),
-                        SUMX(_percent, [@totalHours])),
-                _breakPoint IN {6,24,27},
-                    IF(
-                        ISBLANK(SUMX(_percent,[@totalHours])),
-                            0,
-                        DIVIDE(
-                            SUMX(_percent, [@percent] * [@vol]),
-                            SUMX(_percent, [@vol]))),
-                BLANK())
+                        SUMX(_percent, [@percent] * [@vol]),
+                        SUMX(_percent, [@vol]))),
+            BLANK())
                                 
     
     </code>
@@ -497,34 +513,212 @@
 <pre>
     <code class="language-css">
         VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
-        VAR _base = ADDCOLUMNS(
-                        SUMMARIZE('_vehiclesDIM',
-                            '_vehiclesDIM'[_vehicleName]),
-                    "@active",
-                        CALCULATE(
-                            MAXX('_FACT','_FACT'[_active]),
-                            REMOVEFILTERS('_idlesDIM'[idle_model_category])),
-                    "@hours",
-                            CALCULATE(
-                                SUMX(
-                                    FILTER('_FACT',
-                                        '_FACT'[_active] = 1),
-                                    '_FACT'[duration])) / 3600,
-                    "@totalHours",
-                            CALCULATE(
-                                SUM('_FACT'[duration]),
-                                    FILTER(ALL('_idlesDIM'),
-                                '_idlesDIM'[Sorting] = 1)) / 3600)
 
+        VAR _base = ADDCOLUMNS(
+            SUMMARIZE('_vehiclesDIM',
+                '_vehiclesDIM'[_vehicleName]),
+        "@vol",
+            CALCULATE(
+                MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+        "@active",
+            CALCULATE(
+                MAXX('_FACT','_FACT'[_active]),
+                ALL('_idlesDIM')),
+        "@hours",
+            SWITCH(TRUE(),
+                _breakPoint = 2,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2})) / 3600,
+                _breakPoint = 3,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3})) / 3600,
+                _breakPoint = 4,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4})) / 3600,
+                _breakPoint = 5,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                _breakPoint = 7,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7})) / 3600,
+                _breakPoint = 8,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8})) / 3600,
+                _breakPoint = 9,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9})) / 3600,
+                _breakPoint = 10,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10})) / 3600,
+                _breakPoint = 11,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11})) / 3600,
+                _breakPoint = 12,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12})) / 3600,
+                _breakPoint = 14,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14})) / 3600,
+                _breakPoint = 15,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15})) / 3600,
+                _breakPoint = 21,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21})) / 3600,
+                _breakPoint = 22,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                _breakPoint = 25,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25})) / 3600,
+                    0),
+            "@totalHours",
+                    CALCULATE(
+                        SUM('_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+                            FILTER(_base,
+                                [@active] = 1),
+                            "@percent",
+                            SWITCH(TRUE(),
+                                _breakPoint in {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25},
+                                    1 - ([@hours] / [@totalHours]),
+                                0))
         RETURN
         
         SWITCH(TRUE(),
-            _breakPoint IN {1,6,24,27},0,
+            _breakPoint = 1,
+                DIVIDE(
+                    SUMX(_percent, [@hours]),
+                    SUMX(_percent, [@totalHours])),
             DIVIDE(
-                        SUMX(_base, [@hours]),
-                        SUMX(_base, [@totalHours])))
+                SUMX(_percent, [@percent] * [@vol]),
+                SUMX(_percent, [@vol])))
     </code>
 </pre>
+
+
+                    <p>
+                        So at first glance it looks too long (for no reason) and maybe complex. But the idea and pattern still builds on the previuosly mentioned logic plus some 
+                        added pattern.
+
+                    </p>
+                    <p>
+                        Let me break it down and explain why this turned out to be so long:
+                        <ul>
+                            <li>
+                                There s a pattern in <b>VAR _base</b> when we calculate @hours. It actually imitates (yes in a long straight forward way) cumulative amount.
+                            </li>
+
+                            <li>For every ordinary category we need to sum up time from all the previous categories plus current category time</li>
+
+                            <li>This pattern goes for every category because i needed to keep the big list available for amendments eg. to add new categories, remove 
+                                categories or skip (hide/show) categories. But to keep the full list. It could be done in a few different ways but i decided to go 
+                                with this long version since calculation for every category is clear and you can track the flow and logic for each point.
+                            </li>
+
+                            <li>
+                                In <b>VAR _percent</b> we calculate the remaining percentage instead of the total by subtracting the amount from 1 (aka 100%)
+                            </li>
+                            <li>
+                                Finally in the return statement we just calculate the weighted average.
+                            </li>
+                        </ul>
+                    </p>
+
+
+                    <h2>Additional thoughts</h2>
+
+                    <p>
+                        When thinking of a chart (bar chart in this case) and logic behind each category calculation you may imagine (like a small kid) the following:
+                        <ul>
+                            <li>The imaginary worker under the hood accepts your request to perform some logic & calculation (which you explain to him with DAX)</li>
+                            <li>When you provide this worker with instructions he starts going from top to bottom of the chart calculating each bar separately
+                                 taking into account the name of the current category from the Y axis and other attributes (see the next point)
+                            </li>
+                            <li>Additionally you tell him to implement provided logic with some special requests (eg external filters that come from slicers like Date, Type etc)</li>
+                        </ul>
+                    </p>
+          
+
+
+
                     </div> <!-- end entry content -->
 
                 </article> <!-- end column large-full entry-->
