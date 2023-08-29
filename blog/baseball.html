@@ -177,26 +177,43 @@
                                 <li>
                                     Now the question: 
                                         <b>
-                                            Find pitchers (name and second name) with the highest pitch speed for each team through out all seasons.
+                                            Find top pitchers with the highest pitch speed for each team through out all seasons and their best pitch speed.
                                         </b>
+                                        So you should get a three-column table:
+                                        <ul>
+                                            <li>Team (of the pitcher)</li>
+                                            <li>Pitcher (name and second name)</li>
+                                            <li>Speed (best pitch eg top speed)</li>
+                                        </ul>
                                 </li>
                             </ul>
 
-                            
-                            
-                            <br>
-                            For expample there s a "Ready for work" stage that assumes all main 
-                            technical maintenance is done and managers can view the time (as percentage of total) equipment (heavy duty loaders) 
-                            can operate in field.
+                        </p>
+                                <p>
+                                    That s pretty fast, yeah ? I told you this post will take just a few minutes to read. 
+                                </p>
+    
+                        <p>
+                            For me it was a challeging task since i just started getting used to UI and SQL in Google BigQuery. 
+                            Getting familiar with the dataset (table + structure) took me some time.
+                            After getting the structure into my head i applied the question on top of it and mapped out the top level logic of the query.
+                            The last thing was to make <b>UNNEST</b> function work (since PostgreSQL and BigQuery are a bit different).
+                        </p>
 
-                            The next stage "Effective work time" is a break point metric that shows how much (in %%) the loader was actually busy with main work.
-                            <br><br>
-                            Another little twist was to add <b>switcher</b> to view linear or weighted average (weighted by the excavator  ladle volume) 
-                            time utilization.
-                            
+                        <p>
+                            Before going further i d advice you to check the original dataset, its structure and then come up with your solution.
+                            Then i ll be glad to see you back with comments (which you can post here in myb Linkedin post).
+                            No cheating since those who are really good with BigQuery and SQL will come up with a better solution (i m sure). 
+                            If you are less confident in your SQL hard skills you better try before watching my solution.
+                        </p>
+
+                        <p>
+                            Below is the code to retrieve the data from the dataset. You can easily plug it in BigQuery and get the result.
+                            Below the code i ll write the logic of my script. 
+                            There are mainly two approaches you can take: eigher using CTE <b>(WITH clause)</b> or using subquery (as i did).
                         </p>
                         
-                        
+                        <!-- ############### SQL SECTION ##############-->
 
     <pre class="SQLCode"><span class="SQLKeyword">SELECT</span> _team
         <span class="SQLOperator">,</span>_pitcher
@@ -334,10 +351,6 @@
     <span class="SQLKeyword">ORDER</span> <span class="SQLKeyword">BY</span> _speed <span class="SQLKeyword">DESC</span>
     </pre>
             
-                        
-          
-
-
 
                     </div> <!-- end entry content -->
 
