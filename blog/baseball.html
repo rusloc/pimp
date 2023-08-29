@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Google BigQuery SQL task</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/vendor.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="../js/modernizr.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body class="ss-bg-white">
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="top" class="s-wrap site-wrapper"></div>
+         <!-- site header
+        ================================================== -->
+        <header class="s-header">
+
+            <div class="header__top">
+                <div class="header__logo">
+                    <a class="site-logo" href="../index.html">
+                        <p class="mainLogo">pimp.my.bi</p>
+                    </a>
+                </div>
+            </div> <!-- end header__top -->
+
+            <nav class="header__nav-wrap">
+
+                <ul class="header__nav">
+                    <li><a href="../index.html" title="Home">Home</a></li>
+                    <li><a href="../page-about.html" title="About">About</a></li>
+                    <li><a href="../page-contact.html" title="Contact">Contact</a></li>
+                </ul> <!-- end header__nav -->
+
+                <ul class="header__social">
+                    <li class="ss-linked">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Linkedin</span>
+                        </a>
+                    </li>
+                    <li class="ss-facebook">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="ss-upwork">
+                        <a href="#0">
+                            <span class="screen-reader-text">Upwork</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav> <!-- end header__nav-wrap -->
+
+            <!-- menu toggle -->
+            <a href="#0" class="header__menu-toggle">
+                <span>Menu</span>
+            </a>
+
+        </header> <!-- end s-header -->
+
+
+        <!-- search-block -->
+        <div class="s-search">
+
+            <div class="search-block">
+    
+                <form role="search" method="get" class="search-form" action="#">
+                    <label>
+                        <span class="hide-content">Ping me in <a href="http://www.t.me/cirob">Telegram</a> or send <a class="popupLink" href="mailto: pimp.my.bi@gmail.com">Email</a></span>
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+    
+                <a href="#0" title="Close Search" class="search-close">Close</a>
+    
+            </div> 
+        <!-- end search-block -->
+
+            <!-- search modal trigger -->
+            <a href="#0" class="search-trigger">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"/> </g> </svg>  
+                <span>contact</span>
+            </a>
+            <span class="search-line"></span>
+
+        </div> 
+        <!-- end s-search -->
+
+
+        <!-- site content
+        ================================================== -->
+        <div class="s-content content">
+            <main class="row content__page">
+                
+                <article class="column large-full entry format-standard">
+
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            SQL task in Google BigQuery. 
+                        </h1>
+
+                    </div> 
+
+                    <div class="media-wrap entry__media">
+                        <div class="entry__post-thumb">
+                            <img src="./images/baseball/bq_1000.png" 
+                                 srcset=" 
+                                 ./images/baseball/bq_1000.png 1000w, 
+                                 ./images/baseball/bq_500.png 500w" sizes="(max-width: 1000px) 100vw, 1000px" alt="">
+                            </div>
+                    </div>
+                    
+                    <!-- end entry__header -->
+
+                    <div class="entry__content">
+
+                        <p class="lead drop-cap">
+                        This blog post will take a minute to read and a few minutes to hesitate. Maybe several hours (like it was for me).
+                        
+                        </p>
+
+                        <p>
+                        
+                            Getting straight to business i ll formulate the task (question asked during one of my interviews).
+                            
+                            <br>
+                            <ul>
+                                <li>
+                                    Open dataset <b>from Google BigQuery</b> called Baseball, you can find it 
+                                    <a href="https://console.cloud.google.com/marketplace/product/sportradar-public-data/mlb-pitch-by-pitch"><b>here</b></a> 
+                                    or just google it (google baseball open dataset).
+                                </li>
+                                <li>
+                                    You will (most likely) see three tables: 
+                                    <ul>
+                                        <li>games_post_wide</li>
+                                        <li>games_wide</li>
+                                        <li>schedules</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Now the question: 
+                                        <b>
+                                            Find pitchers (name and second name) with the highest pitch speed for each team through out all seasons.
+                                        </b>
+                                </li>
+                            </ul>
+
+                            
+                            
+                            <br>
+                            For expample there s a "Ready for work" stage that assumes all main 
+                            technical maintenance is done and managers can view the time (as percentage of total) equipment (heavy duty loaders) 
+                            can operate in field.
+
+                            The next stage "Effective work time" is a break point metric that shows how much (in %%) the loader was actually busy with main work.
+                            <br><br>
+                            Another little twist was to add <b>switcher</b> to view linear or weighted average (weighted by the excavator  ladle volume) 
+                            time utilization.
+                            
+                        </p>
+                        
+                        
+
+    <pre class="SQLCode"><span class="SQLKeyword">SELECT</span> _team
+        <span class="SQLOperator">,</span>_pitcher
+        <span class="SQLOperator">,</span>_speed
+    <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+        <span class="SQLComment">-- here we show the rank of the player by his speed (ignoring ties)</span>
+        <span class="SQLKeyword">SELECT</span> _team
+            <span class="SQLOperator">,</span>_pitcher
+            <span class="SQLOperator">,</span>_speed
+            <span class="SQLOperator">,</span>row_number<span class="SQLOperator">(</span><span class="SQLOperator">)</span> <span class="SQLKeyword">OVER</span> <span class="SQLOperator">(</span>
+                <span class="SQLKeyword">PARTITION</span> <span class="SQLKeyword">BY</span> _team <span class="SQLKeyword">ORDER</span> <span class="SQLKeyword">BY</span> _speed <span class="SQLKeyword">DESC</span>
+                <span class="SQLOperator">)</span> _rnk
+        <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+            <span class="SQLComment">-- finalizing the table with player-team link</span>
+            <span class="SQLKeyword">SELECT</span> _team
+                <span class="SQLOperator">,</span>_pitcher
+                <span class="SQLOperator">,</span><span class="SQLFunction">max</span><span class="SQLOperator">(</span>_speed<span class="SQLOperator">)</span> _speed
+            <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+                <span class="SQLComment">-- glueing tables with players and teams</span>
+                <span class="SQLKeyword">SELECT</span> _pitcher
+                    <span class="SQLOperator">,</span><span class="SQLFunction">coalesce</span><span class="SQLOperator">(</span>_home_team<span class="SQLOperator">,</span> _away_team<span class="SQLOperator">)</span> _team
+                    <span class="SQLOperator">,</span>_speed
+                <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+                    <span class="SQLComment">-- setting up the table with players</span>
+                    <span class="SQLKeyword">SELECT</span> venueId
+                        <span class="SQLOperator">,</span>pitcherId
+                        <span class="SQLOperator">,</span>pitcherFirstName <span class="SQLOperator">||</span> <span class="SQLString">'  '</span> <span class="SQLOperator">||</span> pitcherLastName _pitcher
+                        <span class="SQLOperator">,</span><span class="SQLFunction">max</span><span class="SQLOperator">(</span>pitchSpeed<span class="SQLOperator">)</span> _speed
+                    <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+                        <span class="SQLComment">-- full table comprising all seasons</span>
+                        <span class="SQLKeyword">SELECT</span> venueId
+                            <span class="SQLOperator">,</span>pitcherId
+                            <span class="SQLOperator">,</span>pitcherFirstName
+                            <span class="SQLOperator">,</span>pitcherLastName
+                            <span class="SQLOperator">,</span>pitchSpeed
+                        <span class="SQLKeyword">FROM</span> `bigquery <span class="SQLOperator">-</span> <span class="SQLKeyword">PUBLIC</span> <span class="SQLOperator">-</span> data<span class="SQLOperator">.</span>baseball<span class="SQLOperator">.</span>games_wide`
+                        
+                        <span class="SQLKeyword">UNION ALL</span>
+                        
+                        <span class="SQLKeyword">SELECT</span> venueId
+                            <span class="SQLOperator">,</span>pitcherId
+                            <span class="SQLOperator">,</span>pitcherFirstName
+                            <span class="SQLOperator">,</span>pitcherLastName
+                            <span class="SQLOperator">,</span>pitchSpeed
+                        <span class="SQLKeyword">FROM</span> `bigquery <span class="SQLOperator">-</span> <span class="SQLKeyword">PUBLIC</span> <span class="SQLOperator">-</span> data<span class="SQLOperator">.</span>baseball<span class="SQLOperator">.</span>games_post_wide`
+                        <span class="SQLOperator">)</span> _all
+                    <span class="SQLKeyword">WHERE</span> pitchSpeed <span class="SQLOperator">!=</span> 0
+                    <span class="SQLKeyword">GROUP</span> <span class="SQLKeyword">BY</span> venueId
+                        <span class="SQLOperator">,</span>pitcherId
+                        <span class="SQLOperator">,</span>pitcherFirstName <span class="SQLOperator">||</span> <span class="SQLString">'  '</span> <span class="SQLOperator">||</span> pitcherLastName
+                    <span class="SQLOperator">)</span> _grp
+                <span class="SQLComment">-- joining table with player-team links</span>
+                <span class="SQLKeyword">LEFT JOIN</span> <span class="SQLOperator">(</span>
+                    <span class="SQLKeyword">SELECT</span> pitcherId
+                        <span class="SQLOperator">,</span>venueId
+                        <span class="SQLComment">-- we need to check here if the pitcher is in the list of the homing team</span>
+                        <span class="SQLOperator">,</span><span class="SQLKeyword">CASE</span> 
+                            <span class="SQLKeyword">WHEN</span> pitcherId <span class="SQLOperator">IN</span> unnest<span class="SQLOperator">(</span>
+                                                    [homeFielder1		
+                                                    ,homeFielder2			
+                                                    ,homeFielder3			
+                                                    ,homeFielder4			
+                                                    ,homeFielder5			
+                                                    ,homeFielder6			
+                                                    ,homeFielder7			
+                                                    ,homeFielder8			
+                                                    ,homeFielder9			
+                                                    ,homeFielder10			
+                                                    ,homeFielder11			
+                                                    ,homeFielder12			
+                                                    ,homeBatter1			
+                                                    ,homeBatter2			
+                                                    ,homeBatter3			
+                                                    ,homeBatter4			
+                                                    ,homeBatter5			
+                                                    ,homeBatter6			
+                                                    ,homeBatter7			
+                                                    ,homeBatter8			
+                                                    ,homeBatter9]
+                                <span class="SQLOperator">)</span>
+                                <span class="SQLKeyword">THEN</span> homeTeamName
+                            <span class="SQLKeyword">ELSE</span> <span class="SQLKeyword">NULL</span>
+                            <span class="SQLKeyword">END</span> _home_team
+                        <span class="SQLComment">-- we need to check here if the pitcher is in the list of the guest team</span>
+                        <span class="SQLOperator">,</span><span class="SQLKeyword">CASE</span> 
+                            <span class="SQLKeyword">WHEN</span> pitcherId <span class="SQLOperator">IN</span> unnest<span class="SQLOperator">(</span>
+                                                    [awayFielder1		
+                                                    ,awayFielder2		
+                                                    ,awayFielder3		
+                                                    ,awayFielder4		
+                                                    ,awayFielder5		
+                                                    ,awayFielder6		
+                                                    ,awayFielder7		
+                                                    ,awayFielder8		
+                                                    ,awayFielder9		
+                                                    ,awayFielder10		
+                                                    ,awayFielder11		
+                                                    ,awayFielder12		
+                                                    ,awayBatter1		
+                                                    ,awayBatter2		
+                                                    ,awayBatter3		
+                                                    ,awayBatter4		
+                                                    ,awayBatter5		
+                                                    ,awayBatter6		
+                                                    ,awayBatter7		
+                                                    ,awayBatter8		
+                                                    ,awayBatter9]
+                                <span class="SQLOperator">)</span>
+                                <span class="SQLKeyword">THEN</span> awayTeamName
+                            <span class="SQLKeyword">ELSE</span> <span class="SQLKeyword">NULL</span>
+                            <span class="SQLKeyword">END</span> _away_team
+                    <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
+                        <span class="SQLKeyword">SELECT</span> <span class="SQLOperator">*</span>
+                        <span class="SQLKeyword">FROM</span> `bigquery <span class="SQLOperator">-</span> <span class="SQLKeyword">PUBLIC</span> <span class="SQLOperator">-</span> data<span class="SQLOperator">.</span>baseball<span class="SQLOperator">.</span>games_wide`
+                        
+                        <span class="SQLKeyword">UNION ALL</span>
+                        
+                        <span class="SQLKeyword">SELECT</span> <span class="SQLOperator">*</span>
+                        <span class="SQLKeyword">FROM</span> `bigquery <span class="SQLOperator">-</span> <span class="SQLKeyword">PUBLIC</span> <span class="SQLOperator">-</span> data<span class="SQLOperator">.</span>baseball<span class="SQLOperator">.</span>games_post_wide`
+                        <span class="SQLOperator">)</span> t
+                    <span class="SQLOperator">)</span> _team <span class="SQLKeyword">ON</span> _team<span class="SQLOperator">.</span>pitcherId <span class="SQLOperator">=</span> _grp<span class="SQLOperator">.</span>pitcherId
+                    <span class="SQLKeyword">AND</span> _team<span class="SQLOperator">.</span>venueId <span class="SQLOperator">=</span> _grp<span class="SQLOperator">.</span>venueId
+                <span class="SQLOperator">)</span> _total
+            <span class="SQLKeyword">GROUP</span> <span class="SQLKeyword">BY</span> _team
+                <span class="SQLOperator">,</span>_pitcher
+            <span class="SQLOperator">)</span> _filter
+        <span class="SQLKeyword">WHERE</span> 1 <span class="SQLOperator">=</span> 1
+            <span class="SQLKeyword">AND</span> _team <span class="SQLKeyword">IS</span> <span class="SQLOperator">NOT</span> <span class="SQLKeyword">NULL</span>
+            <span class="SQLKeyword">AND</span> _pitcher <span class="SQLKeyword">IS</span> <span class="SQLOperator">NOT</span> <span class="SQLKeyword">NULL</span>
+            <span class="SQLKeyword">AND</span> _pitcher <span class="SQLOperator">!=</span> <span class="SQLString">''</span>
+            <span class="SQLKeyword">AND</span> _speed <span class="SQLOperator">!=</span> 0
+        <span class="SQLOperator">)</span> _rank
+    <span class="SQLKeyword">WHERE</span> 1 <span class="SQLOperator">=</span> 1
+        <span class="SQLKeyword">AND</span> _rnk <span class="SQLOperator">=</span> 1
+    <span class="SQLKeyword">ORDER</span> <span class="SQLKeyword">BY</span> _speed <span class="SQLKeyword">DESC</span>
+    </pre>
+            
+                        
+          
+
+
+
+                    </div> <!-- end entry content -->
+
+                </article> <!-- end column large-full entry-->
+
+
+       
+            </main>
+
+        </div> <!-- end s-content -->
+
+
+        <!-- footer
+        ================================================== -->
+        <footer class="s-footer footer">
+            <div class="row">
+                <div class="column large-full footer__content">
+                    <div class="footer__copyright">
+                        <span>© pimpmybi 2023</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"></a>
+            </div>
+        </footer>
+
+    </div> <!-- end s-wrap -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/plugins.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>

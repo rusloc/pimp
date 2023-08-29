@@ -3663,3 +3663,36 @@ body.search-is-visible {
 }
 
 
+/* -------------------------------------------------------------------
+ * ## SQL formatting options
+ * ------------------------------------------------------------------- */
+
+
+
+.SQLCode {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: Consolas, "Andale Mono", Courier, "Courier New", monospace;
+    white-space: pre;
+    -o-tab-size: 1;
+    -moz-tab-size: 1;
+    -webkit-tab-size: 1;
+}
+.SQLComment {
+    color: #00AA00;
+}
+.SQLString {
+    color: #AA0000;
+}
+.SQLFunction {
+    color: #AA00AA;
+}
+.SQLKeyword {
+    color: #0000AA;
+}
+.SQLOperator {
+    color: #777777;
+}
+.SQLErrorHighlight {
+    background-color: #FFFF00;
+}

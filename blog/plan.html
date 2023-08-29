@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Time utilization funnel chart</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/vendor.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="../js/modernizr.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body class="ss-bg-white">
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="top" class="s-wrap site-wrapper"></div>
+         <!-- site header
+        ================================================== -->
+        <header class="s-header">
+
+            <div class="header__top">
+                <div class="header__logo">
+                    <a class="site-logo" href="../index.html">
+                        <p class="mainLogo">pimp.my.bi</p>
+                    </a>
+                </div>
+            </div> <!-- end header__top -->
+
+            <nav class="header__nav-wrap">
+
+                <ul class="header__nav">
+                    <li><a href="../index.html" title="Home">Home</a></li>
+                    <li><a href="../page-about.html" title="About">About</a></li>
+                    <li><a href="../page-contact.html" title="Contact">Contact</a></li>
+                </ul> <!-- end header__nav -->
+
+                <ul class="header__social">
+                    <li class="ss-linked">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Linkedin</span>
+                        </a>
+                    </li>
+                    <li class="ss-facebook">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="ss-upwork">
+                        <a href="#0">
+                            <span class="screen-reader-text">Upwork</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav> <!-- end header__nav-wrap -->
+
+            <!-- menu toggle -->
+            <a href="#0" class="header__menu-toggle">
+                <span>Menu</span>
+            </a>
+
+        </header> <!-- end s-header -->
+
+
+        <!-- search-block -->
+        <div class="s-search">
+
+            <div class="search-block">
+    
+                <form role="search" method="get" class="search-form" action="#">
+                    <label>
+                        <span class="hide-content">Ping me in <a href="http://www.t.me/cirob">Telegram</a> or send <a class="popupLink" href="mailto: pimp.my.bi@gmail.com">Email</a></span>
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+    
+                <a href="#0" title="Close Search" class="search-close">Close</a>
+    
+            </div> 
+        <!-- end search-block -->
+
+            <!-- search modal trigger -->
+            <a href="#0" class="search-trigger">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"/> </g> </svg>  
+                <span>contact</span>
+            </a>
+            <span class="search-line"></span>
+
+        </div> 
+        <!-- end s-search -->
+
+
+        <!-- site content
+        ================================================== -->
+        <div class="s-content content">
+            <main class="row content__page">
+                
+                <article class="column large-full entry format-standard">
+
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            Funnel chart to track time utilization (with real interactive report in Power BI). 
+                        </h1>
+
+                    </div> 
+
+                    <!-- <div class="media-wrap entry__media">
+                        <div class="entry__post-thumb">
+                            <img src="../images/thumbs/time_funnel/funnel_chart_preview_1000.png" 
+                                 srcset="../images/thumbs/time_funnel/funnel_chart_preview_2000.png 2000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_1000.png 1000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                    </div> -->
+                    
+                    <!-- end entry__header -->
+
+                    <div class="entry__content">
+
+                        <p class="lead drop-cap">
+                        This report was created for a real client, a coal mining company. All numbers were modified to hide metrics.
+                        In this post i show my approach to creating a funnel chart that shows time utilization.
+                        Dashboard utilizes basic (default) chart available in Power BI (Stacked bar chart).
+                        Further i will explain how i built this.
+                        </p>
+
+                        <p>
+                        
+                            The idea (and requirements) was to build a funnel that flows from top to bottom. It starts with total available time
+                            (as percentage of total 24/7 time available eg. 100%) and then deducts time spent on each category 
+                            (also as percentage of total available time). 
+                            <br><br>
+                            A little twist here was to add a few 
+                            <b>breakpoints</b> that show stages of mining equipment readiness. 
+                            <br><br>
+                            For expample there s a "Ready for work" stage that assumes all main 
+                            technical maintenance is done and managers can view the time (as percentage of total) equipment (heavy duty loaders) 
+                            can operate in field.
+
+                            The next stage "Effective work time" is a break point metric that shows how much (in %%) the loader was actually busy with main work.
+                            <br><br>
+                            Another little twist was to add <b>switcher</b> to view linear or weighted average (weighted by the excavator  ladle volume) 
+                            time utilization.
+                            
+                        </p>
+                        <p>
+                            <b>* Below is the actual (interactive) report. Note there s no MOBILE view available, 
+                                so better open your desktop/laptop and try it out (though it still will work on your mobile device).
+                            </b>
+                        </p>
+
+                        <div class="lity-iframe-container">
+                            <center>
+                            <iframe title="Time unitilaztion" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiY2M3YzU2MjAtNjdlOC00NGU2LThlMTItMzc2MTE2Yjk0MDlkIiwidCI6IjBjZWM3Mzk3LWE0MDQtNDMwZi04MmQzLWQzMzIyZjdlZmM2OCIsImMiOjl9&embedImagePlaceholder=true" frameborder="0" allowFullScreen="true"></iframe>
+                            </center>
+                        </div>
+                        <h2>Model</h2>
+    
+                        <p>
+                            First we need to layout and structure the <b>Fact table</b> (actually Fact and two Plan table since there are two types of plan).
+                            The Fact/Plan table looks like this:
+
+                        </p>
+                        <table>
+                            <caption>Fact table</caption>
+                            <thead>
+                              <tr>
+                                <th scope="col">_vehicleID</th>
+                                <th scope="col">_date</th>
+                                <th scope="col">_idleCategory</th>
+                                <th scope="col">_duration</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td data-label="_vehicleID">LDR-1250-SP-3068</td>
+                                <td data-label="_date">04/01/2023</td>
+                                <td data-label="_idleCategory">Total time</td>
+                                <td data-label="_duration">86 400</td>
+                              </tr>
+                              <tr>
+                                <td data-label="_vehicleID">Visa - 6076</td>
+                                <td data-label="_date">14/05/2032</td>
+                                <td data-label="_idleCategory">Maintenance</td>
+                                <td data-label="_duration">4 804</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <center><p>...</p></center>
+                          <p>
+                            So basically we need 4 columns: 
+                            <li><b>_vehicleID</b> (the unique identifier of a vehicle)</li> 
+                            <li><b>_date</b> (the day when we capture time spent by category)</li>
+                            <li><b>_idleCategory</b> (category ID or NAME when vehicle was doing something, i called it _originalCat on the diagram below)</li>
+                            <li><b>_duration</b> (in Seconds, Hours or whatever you want to use)</li>
+                            <br>
+                            We need one line for every day for every vehicle to calculate total time available (it would be 86 400 sec or 24 hours).
+                            </p>
+
+                        <p>
+                            So with these 3 tables setup (fact, weekly plan, monthly plan) we now need a few more tables to build a model:
+                        </p>
+                        
+                        <ul>
+                            <li>A link table for Fact (since there are a lot of low level categories in Fact table 
+                                we need to group them into more high level categories)</li>
+                            <li>A link table for Weekly Plan (the same idea with categories for both plan tables)</li>
+                            <li>A link table for Monthly Plan (the same idea with categories for both plan tables)</li>
+                            <li>High level Idles table (we will use this table to create categories in the chart)</li>
+                            <li>A Calendar table</li>
+                            <li>Dimension table with vehicles and their corresponding fields and offices</li>
+                        </ul>
+                        <p>
+                            I used intermediary tables for Fact/Plan since some idle categories in Fact and Plan did not match. 
+                            And also it was easier to work with separate intermediary tables when debugging.
+                        </p>
+
+    
+                        <blockquote>
+                            <p>
+                            As a little side note: for this report i had to create a custom Calendar table with business week starting on Saturday
+                            and ending on Friday. In one of my next blog posts i will share my solution in <b>PowerQuery M code</b>.
+                            </p>
+                        </blockquote>
+    
+                        <p>
+                            So basically having all our tables loaded into model we just need to link them together:
+                            <ul>
+                                <li>Fact > Fact (link table) > Idles table</li>
+                                <li>Weekly plan > Weekly plan (link table) > Idles table</li>
+                                <li>Monthly plan > Monthly plan (link table) > Idles table</li>
+                                <li>Calendar >>> Fact, Plan tables (Calendar links to all fact, plan tables)</li>
+                                <li>Dimension table with vehicles >>> Fact/Plan tables</li>
+                            </ul>
+                        </p>
+                        
+                        <p>
+                            Finaly the basic skeleton of the model would look like this:
+                        </p>
+                        <div class="media-wrap">
+                            <div>
+                                <img src="../blog/images/funnel/funnel data model 1200.jpg" srcset="../blog/images/funnel/funnel data model 1200.jpg 1200w, 
+                                ../blog/images/funnel/funnel data model 800.jpg 800w, 
+                                ../blog/images/funnel/funnel data model 500.jpg 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                        </div>
+    
+                        <h2>Measures</h2>
+    
+                        <p>
+                        To solve the problem we need to remember a few things:
+                        </p>
+
+                        <ul>
+                            <li>To have a category plotted on a chart axis - it must be physically present in a table</li>
+                            <li>We would need three Measures to create the funnel chart:
+                                <ul>
+                                    <li>Calculate total time spent for <b>ordinary categories</b></li>
+                                    <li>Calculate <b>breakpoints</b></li>
+                                    <li>Calculate bars that will <b>fill blank space</b></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h3>Odrinary categories time calculation</h3>
+                        <p>
+                            Lets start with the measure: calculate (sum up) time spent for each <b>ordinary category</b> (linear time utilization).
+                            Then get to the weighted average measure. And after we ll run through the logic.
+                        </p>
+
+
+<pre>
+    <code class="language-css">
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+    VAR _base = ADDCOLUMNS(
+                    SUMMARIZE('_vehiclesDIM',
+                        '_vehiclesDIM'[_vehicleName]),
+                "@active",
+                    CALCULATE(
+                        MAXX('_FACT','_FACT'[_active]),
+                        REMOVEFILTERS('_idlesDIM'[idle_model_category])),
+                "@hours",
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration])) / 3600,
+                "@totalHours",
+                        CALCULATE(
+                            SUM('_FACT'[duration]),
+                                FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] = 1)) / 3600)
+
+    RETURN
+
+    SWITCH(TRUE(),
+        _breakPoint IN {1,6,24,27},0,
+        DIVIDE(
+                    SUMX(_base, [@hours]),
+                    SUMX(_base, [@totalHours])))
+    </code>
+</pre>
+
+                            <p>
+                                Next lets calculate time utilization for <b>ordinary categories</b> but with a twist (<b>weighted average</b>: excavators ladle volumes
+                                will act as weights)
+                                
+                            </p>
+
+                            <pre>
+                                <code class="language-css">
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+
+    VAR _base = ADDCOLUMNS(
+                    SUMMARIZE('_vehiclesDIM',
+                        '_vehiclesDIM'[_vehicleName]),
+                "@vol",
+                    CALCULATE(
+                        MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+                "@active",
+                    CALCULATE(
+                        MAXX('_FACT','_FACT'[_active]),
+                        ALL('_idlesDIM')),
+                "@hours",
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration])) / 3600,
+                "@totalHours",
+                        CALCULATE(
+                            SUM('_FACT'[duration]),
+                                FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] = 1)) / 3600)
+    VAR _percent = ADDCOLUMNS(
+                        FILTER(_base,
+                            [@active] = 1),
+                        "@percent",
+                            [@hours] / [@totalHours]))
+                            
+    RETURN
+    
+    SWITCH(TRUE(),
+        _breakPoint IN {6,24,27},
+            0,
+        DIVIDE(
+            SUMX(_percent, [@percent] * [@vol]),
+            SUMX(_percent, [@vol])))
+
+                 </code>
+            </pre>
+
+                    <p>
+                        So the logic in these two measures is pretty much the same:
+                        <ul>
+                            <li>In the VAR called <b>_breakPoint</b> we capture the current item on the plot (eg Total time, maintenance, Conservation etc) that will be used in the RETURN statement</li>
+                            <li>VAR _base is the <b>virtual table</b> where we add columns with attributes:
+                                <ul>
+                                    <li>First we get unique values of excavators</li>
+                                    <li>Then we add attribute @active which will show if the excavator was active during selected period</li>
+                                    <li>Another attribute will be @hours where we sum up hours from the fact/plan table</li>
+                                    <li>And finally we need total hours of work in @totalHours column</li>
+                                </ul>
+                            </li>
+                            <li>In the return statement we calculate the percentage of Hours spent in each category to Total hours</li>
+                        </ul>
+                    </p>
+                    <p>
+                        Difference between the linear calculation and weighted is the following:
+                        <ul>
+                            <li>We need one more table to filter out excavators which may break the logic of calculation with their zero time (because they have laddle volume)</li>
+                            <li>and in the return statement we use the weighted average formula instead of linear one</li>
+                        </ul>
+                    </p>
+                    <p>
+                        So it turns out to be not that hard. Now lets breakdown the measure for <b>breakpoints</b> that have different color and logic in the chart.
+                    </p>
+
+                            <h3>Breakpoints time calculation</h3>
+                            <pre>
+                                <code class="language-css">
+        
+    VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+
+    VAR _base = ADDCOLUMNS(
+            SUMMARIZE('_vehiclesDIM',
+                '_vehiclesDIM'[_vehicleName]),
+        "@vol",
+            CALCULATE(
+                MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+        "@active",
+            CALCULATE(
+                MAXX('_FACT','_FACT'[_active]),
+                ALL('_idlesDIM')),
+        "@hours",
+            SWITCH(TRUE(),
+                _breakPoint = 6,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                _breakPoint = 24,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                _breakPoint = 27,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25,26})) / 3600,
+                CALCULATE(
+                    SUMX(
+                        FILTER('_FACT',
+                            '_FACT'[_active] = 1),
+                        '_FACT'[duration])) / 3600),
+        "@totalHours",
+                CALCULATE(
+                    SUM('_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                    '_idlesDIM'[Sorting] = 1)) / 3600)
+    VAR _percent = ADDCOLUMNS(
+                FILTER(_base,
+                    [@active] = 1),
+                "@percent",
+                SWITCH(TRUE(),
+                    _breakPoint IN {6,24,27},
+                        1 - ([@hours] / [@totalHours]),
+                    [@hours] / [@totalHours]))
+    RETURN
+        SWITCH(TRUE(),
+            _breakPoint = 1,
+                DIVIDE(
+                    SUMX(_percent, [@hours]),
+                    SUMX(_percent, [@totalHours])),
+            _breakPoint IN {6,24,27},
+                IF(
+                    ISBLANK(SUMX(_percent,[@totalHours])),
+                        0,
+                    DIVIDE(
+                        SUMX(_percent, [@percent] * [@vol]),
+                        SUMX(_percent, [@vol]))),
+            BLANK())
+                                
+    
+    </code>
+    </pre>
+
+    <p>
+        So calculation of <b>breakpoint</b> is a bit more trickier but still follows the same logic as above measures:
+        
+    </p>
+    <p>
+                    <ul>
+                        <li>We need a breakpoint captured in VAR</li>
+                        <li>Then we create a virtual table and add attributes</li>
+                        <li>In <b>@hours</b> attribute we add some logic to calculate breakpoints: with a SWITCH function we check if it s a breakpoint and then calculate all the hours
+                            for ordinary categories in total prior to that breakpoint
+                        </li>
+                        <li>In addition we need one more virtual table based on the previous one (VAR _percent): there we need to calculate how much in percentage did that breakpoint cost 
+                            compared to Total time
+                        </li>
+                        <li>In the RETURN statement we add more logic: calculating the very first bar on the chart and making calculations only for breakpoints skipping ordinary categories</li>
+                    </ul>
+    </p>
+
+                            <h3>Calculating blank bars</h3>
+
+                <p>
+                    We need one more measure to calculate bars that will just occupy space and leave the visible bars "hanging in the air" and making a waterfall.
+                </p>
+<pre>
+    <code class="language-css">
+        VAR _breakPoint = SELECTEDVALUE('_idlesDIM'[Sorting])
+
+        VAR _base = ADDCOLUMNS(
+            SUMMARIZE('_vehiclesDIM',
+                '_vehiclesDIM'[_vehicleName]),
+        "@vol",
+            CALCULATE(
+                MAXX('_vehiclesDIM','_vehiclesDIM'[_ladleVolume])),
+        "@active",
+            CALCULATE(
+                MAXX('_FACT','_FACT'[_active]),
+                ALL('_idlesDIM')),
+        "@hours",
+            SWITCH(TRUE(),
+                _breakPoint = 2,
+                    CALCULATE(
+                        SUMX(
+                            FILTER('_FACT',
+                                '_FACT'[_active] = 1),
+                            '_FACT'[duration]),
+                        FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] IN {2})) / 3600,
+                _breakPoint = 3,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3})) / 3600,
+                _breakPoint = 4,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4})) / 3600,
+                _breakPoint = 5,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5})) / 3600,
+                _breakPoint = 7,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7})) / 3600,
+                _breakPoint = 8,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8})) / 3600,
+                _breakPoint = 9,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9})) / 3600,
+                _breakPoint = 10,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10})) / 3600,
+                _breakPoint = 11,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11})) / 3600,
+                _breakPoint = 12,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12})) / 3600,
+                _breakPoint = 14,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14})) / 3600,
+                _breakPoint = 15,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15})) / 3600,
+                _breakPoint = 21,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21})) / 3600,
+                _breakPoint = 22,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22})) / 3600,
+                _breakPoint = 25,
+                        CALCULATE(
+                            SUMX(
+                                FILTER('_FACT',
+                                    '_FACT'[_active] = 1),
+                                '_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                            '_idlesDIM'[Sorting] IN {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25})) / 3600,
+                    0),
+            "@totalHours",
+                    CALCULATE(
+                        SUM('_FACT'[duration]),
+                            FILTER(ALL('_idlesDIM'),
+                        '_idlesDIM'[Sorting] = 1)) / 3600)
+        VAR _percent = ADDCOLUMNS(
+                            FILTER(_base,
+                                [@active] = 1),
+                            "@percent",
+                            SWITCH(TRUE(),
+                                _breakPoint in {2,3,4,5,7,8,9,10,11,12,14,15,21,22,25},
+                                    1 - ([@hours] / [@totalHours]),
+                                0))
+        RETURN
+        
+        SWITCH(TRUE(),
+            _breakPoint = 1,
+                DIVIDE(
+                    SUMX(_percent, [@hours]),
+                    SUMX(_percent, [@totalHours])),
+            DIVIDE(
+                SUMX(_percent, [@percent] * [@vol]),
+                SUMX(_percent, [@vol])))
+    </code>
+</pre>
+
+
+                    <p>
+                        So at first glance it looks too long (for no reason) and maybe complex. But the idea and pattern still builds on the previuosly mentioned logic plus some 
+                        added pattern.
+
+                    </p>
+                    <p>
+                        Let me break it down and explain why this turned out to be so long:
+                        <ul>
+                            <li>
+                                There s a pattern in <b>VAR _base</b> when we calculate @hours. It actually imitates (yes in a long straight forward way) cumulative amount.
+                            </li>
+
+                            <li>For every ordinary category we need to sum up time from all the previous categories plus current category time</li>
+
+                            <li>This pattern goes for every category because i needed to keep the big list available for amendments eg. to add new categories, remove 
+                                categories or skip (hide/show) categories. But to keep the full list. It could be done in a few different ways but i decided to go 
+                                with this long version since calculation for every category is clear and you can track the flow and logic for each point.
+                            </li>
+
+                            <li>
+                                In <b>VAR _percent</b> we calculate the remaining percentage instead of the total by subtracting the amount from 1 (aka 100%)
+                            </li>
+                            <li>
+                                Finally in the return statement we just calculate the weighted average.
+                            </li>
+                        </ul>
+                    </p>
+
+
+                    <h2>Additional thoughts</h2>
+
+                    <p>
+                        When thinking of a chart (bar chart in this case) and logic behind each category calculation you may imagine (like a small kid) the following:
+                        <ul>
+                            <li>The imaginary worker under the hood accepts your request to perform some logic & calculation (which you explain to him with DAX)</li>
+                            <li>When you provide this worker with instructions he starts going from top to bottom of the chart calculating each bar separately
+                                 taking into account the name of the current category from the Y axis and other attributes (see the next point)
+                            </li>
+                            <li>Additionally you tell him to implement provided logic with some special requests (eg external filters that come from slicers like Date, Type etc)</li>
+                        </ul>
+                    </p>
+          
+
+
+
+                    </div> <!-- end entry content -->
+
+                </article> <!-- end column large-full entry-->
+
+
+       
+            </main>
+
+        </div> <!-- end s-content -->
+
+
+        <!-- footer
+        ================================================== -->
+        <footer class="s-footer footer">
+            <div class="row">
+                <div class="column large-full footer__content">
+                    <div class="footer__copyright">
+                        <span>© pimpmybi 2023</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"></a>
+            </div>
+        </footer>
+
+    </div> <!-- end s-wrap -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/plugins.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>
