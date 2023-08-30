@@ -194,24 +194,21 @@
                                 </p>
     
                         <p>
+                            Now a little review of my take on this.
                             For me it was a challeging task since i just started getting used to UI and SQL in Google BigQuery. 
-                            Getting familiar with the dataset (table + structure) took me some time.
+                            Additionally (but neccessary) getting familiar with the dataset (table + structure) took me some time.
                             After getting the structure into my head i applied the question on top of it and mapped out the top level logic of the query.
-                            The last thing was to make <b>UNNEST</b> function work (since PostgreSQL and BigQuery are a bit different).
+                            One last thing was to make <b>UNNEST</b> function work (since PostgreSQL and BigQuery are a bit different).
                         </p>
 
                         <p>
-                            Before going further i d advice you to check the original dataset, its structure and then come up with your solution.
-                            Then i ll be glad to see you back with comments (which you can post here in myb Linkedin post).
-                            No cheating since those who are really good with BigQuery and SQL will come up with a better solution (i m sure). 
-                            If you are less confident in your SQL hard skills you better try before watching my solution.
+                            Here below i post the code of my query. If you are a pro - take a minute to review and send your comments
+                            <a href="https://www.linkedin.com/feed/update/urn:li:activity:7102301956970360832/"><b> here </b></a>. I d appreciate it, really.
+                            If you feel like my solution could help you learn something please post a comment of appreciation 
+                            <a href="https://www.linkedin.com/feed/update/urn:li:activity:7102301956970360832/"><b> here </b></a> as well. 
+                            You can easily plug my script and run the query to get the results.
                         </p>
 
-                        <p>
-                            Below is the code to retrieve the data from the dataset. You can easily plug it in BigQuery and get the result.
-                            Below the code i ll write the logic of my script. 
-                            There are mainly two approaches you can take: eigher using CTE <b>(WITH clause)</b> or using subquery (as i did).
-                        </p>
                         
                         <!-- ############### SQL SECTION ##############-->
 
@@ -219,7 +216,7 @@
         <span class="SQLOperator">,</span>_pitcher
         <span class="SQLOperator">,</span>_speed
     <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
-        <span class="SQLComment">-- here we show the rank of the player by his speed (ignoring ties)</span>
+        <span class="SQLComment">-- #rank of the player by his speed (ignoring ties)</span>
         <span class="SQLKeyword">SELECT</span> _team
             <span class="SQLOperator">,</span>_pitcher
             <span class="SQLOperator">,</span>_speed
@@ -227,23 +224,23 @@
                 <span class="SQLKeyword">PARTITION</span> <span class="SQLKeyword">BY</span> _team <span class="SQLKeyword">ORDER</span> <span class="SQLKeyword">BY</span> _speed <span class="SQLKeyword">DESC</span>
                 <span class="SQLOperator">)</span> _rnk
         <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
-            <span class="SQLComment">-- finalizing the table with player-team link</span>
+            <span class="SQLComment">-- #finalizing the table with player-team link</span>
             <span class="SQLKeyword">SELECT</span> _team
                 <span class="SQLOperator">,</span>_pitcher
                 <span class="SQLOperator">,</span><span class="SQLFunction">max</span><span class="SQLOperator">(</span>_speed<span class="SQLOperator">)</span> _speed
             <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
-                <span class="SQLComment">-- glueing tables with players and teams</span>
+                <span class="SQLComment">-- #glueing tables with players and teams</span>
                 <span class="SQLKeyword">SELECT</span> _pitcher
                     <span class="SQLOperator">,</span><span class="SQLFunction">coalesce</span><span class="SQLOperator">(</span>_home_team<span class="SQLOperator">,</span> _away_team<span class="SQLOperator">)</span> _team
                     <span class="SQLOperator">,</span>_speed
                 <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
-                    <span class="SQLComment">-- setting up the table with players</span>
+                    <span class="SQLComment">-- #setting up the table with players</span>
                     <span class="SQLKeyword">SELECT</span> venueId
                         <span class="SQLOperator">,</span>pitcherId
                         <span class="SQLOperator">,</span>pitcherFirstName <span class="SQLOperator">||</span> <span class="SQLString">'  '</span> <span class="SQLOperator">||</span> pitcherLastName _pitcher
                         <span class="SQLOperator">,</span><span class="SQLFunction">max</span><span class="SQLOperator">(</span>pitchSpeed<span class="SQLOperator">)</span> _speed
                     <span class="SQLKeyword">FROM</span> <span class="SQLOperator">(</span>
-                        <span class="SQLComment">-- full table comprising all seasons</span>
+                        <span class="SQLComment">-- #full table comprising all seasons</span>
                         <span class="SQLKeyword">SELECT</span> venueId
                             <span class="SQLOperator">,</span>pitcherId
                             <span class="SQLOperator">,</span>pitcherFirstName
@@ -265,7 +262,7 @@
                         <span class="SQLOperator">,</span>pitcherId
                         <span class="SQLOperator">,</span>pitcherFirstName <span class="SQLOperator">||</span> <span class="SQLString">'  '</span> <span class="SQLOperator">||</span> pitcherLastName
                     <span class="SQLOperator">)</span> _grp
-                <span class="SQLComment">-- joining table with player-team links</span>
+                <span class="SQLComment">-- #joining table with player-team links</span>
                 <span class="SQLKeyword">LEFT JOIN</span> <span class="SQLOperator">(</span>
                     <span class="SQLKeyword">SELECT</span> pitcherId
                         <span class="SQLOperator">,</span>venueId
@@ -350,7 +347,29 @@
         <span class="SQLKeyword">AND</span> _rnk <span class="SQLOperator">=</span> 1
     <span class="SQLKeyword">ORDER</span> <span class="SQLKeyword">BY</span> _speed <span class="SQLKeyword">DESC</span>
     </pre>
-            
+
+
+                                        <p>
+                                            Now let s break down the code:
+                                            <ul>
+                                                <li>The main idea of my take was to use subquery instead of CTE</li>
+                                                <li>I start with UNIONing two tables to get all seasons data (below #full comment)</li>
+                                                <li>Then i join a table with players to see if they play for Home or Guest team (below #joining comment)</li>
+                                                <li>UNNEST is used to get all possible positions where a pitcher can play</li>
+                                                <li>In the above query i get the max speed for each peatcher and gettting their full names (below #setting comment)</li>
+                                                <li>One step above i use COALESCE to get jsut the team name without Home/Guest attribute (below #glueing comment)</li>
+                                                <li>In another step i GROUP the table (below #finalizing COMMENT)</li>
+                                                <li>Pre last step i use ROW_NUMBER to rank pitchers (below #rank comment)</li>
+                                                <li>Finally (in the very upper SELECT) i return results</li>
+                                            </ul>
+
+                                            I feel (almost sure) this query is not optimal. Once again if you managed to read down to this line i beleive you may have a suggestion/comment - 
+                                            feel free to comment in the <a href="https://www.linkedin.com/feed/update/urn:li:activity:7102301956970360832/"><b> post.</b></a>
+
+                                            <br>
+                                            Thanks for reading.
+                                            May the force be with you.
+                                        </p>
 
                     </div> <!-- end entry content -->
 
