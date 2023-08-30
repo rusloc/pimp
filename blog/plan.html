@@ -182,7 +182,54 @@
 
                         <h2>Model</h2>
            
+                            <p>
+                                So here s the model straight away:
+                            </p>
 
+                            <div class="media-wrap">
+                                <div>
+                                    <img src="./images/plan/plan_model_1600.jpg" srcset="./images/plan/plan_model_1600.jpg 1600w, 
+                                    ./images/plan/plan_model_1200.jpg 1200w, 
+                                    ./images/plan/plan_model_1200.jpg 800w" sizes="(max-width: 1600px) 100vw, 1600px" alt="">
+                                </div>
+                            </div>
+
+                            <p>
+                                Let me explain the original data and move to the modelling.
+                                <br>
+                                Input tables set consists of several tables, namely:
+                                <ul>
+                                    <li>
+                                        Table with the improvements (top level view)
+                                    </li>
+                                    <li>
+                                        Next level (one down) comprises documents that are move specific to the areas of implementations (more details on a more granular level)
+                                    </li>
+                                    <li>
+                                        The last (third level) shows numbers for each document (from the previous upper level) and each type of numbers is kept in a separate table:
+                                        <ul>
+                                            <li>Plan</li>
+                                            <li>Fact</li>
+                                            <li>Budget</li>
+                                            <li>Forecast</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </p>
+                            <p>
+                                Now moving on to the modelling. There was a good bunch of transformations (M code in PowerQuery):
+                                <ul>
+                                    <li>Cleaning Improvement tabe</li>
+                                    <li>Cleaning Document table</li>
+                                    <li>Meshing Plan, Fact, Budget, Forecast tables</li>
+                                    <li>Adding custom attributes to all tables</li>
+                                    <li>Creating table DOC_YEAR_LINK with attributes from previously created tabs</li>
+                                </ul>
+                                All of the above i had to move to PowerQuery level since there was limited accessibility to the DB where i could ve moved all the logic of transformations.
+                            </p>
+                            <p>
+                                
+                            </p>
 
        
 
