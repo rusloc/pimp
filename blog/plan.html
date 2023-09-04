@@ -156,7 +156,9 @@
                         i have to hide the numbers and the name as well as adding slight redesign). Just below you can find interactive report with custom logic which i ll 
                         describe later with the solution.
                         </p>
-
+                        <p>
+                            <b>* this dashboard is supposed to be consummed on your desktop/laptop</b>
+                        </p>
 
                         <div class="lity-iframe-container">
                             <center>
@@ -175,6 +177,13 @@
                                     <li>Due to limitation mentioned above i had to move all transformations to PowerQuery level</li>
                                     <li>The report was provided to host on Power BI RS server (locally)</li>
                                     <li>The actual report contains more pages and structure but here i show only top level view on a single page</li>
+                                    <li><span id="specialReq">There was one special requirement: when showing Forecast numbers (in matrix of charts) additional logic was required:</span> 
+                                        <ul>
+                                            <li>Check the column Forecast for the selected year and sum up the numbers if the column is not empty</li>
+                                            <li>Otherwise check the budget column and apply the same logic</li>
+                                            <li>Similarly check the plan column (in case Forecast and Budget columns are empty)</li>
+                                        </ul>
+                                    </li>
                                 </ul>
 
                         </p>
@@ -195,15 +204,15 @@
                             </div>
 
                             <p>
-                                Let me explain the original data and move to the modelling.
+                                Let me explain the original data and move to the modeling.
                                 <br>
                                 Input tables set consists of several tables, namely:
                                 <ul>
                                     <li>
-                                        Table with the improvements (top level view)
+                                        Table with improvements (top level view)
                                     </li>
                                     <li>
-                                        Next level (one down) comprises documents that are move specific to the areas of implementations (more details on a more granular level)
+                                        Next level (one down) comprises documents that are more specific to the areas of implementations (more details on a more granular level)
                                     </li>
                                     <li>
                                         The last (third level) shows numbers for each document (from the previous upper level) and each type of numbers is kept in a separate table:
@@ -219,7 +228,7 @@
                             <p>
                                 Now moving on to the modelling. There was a good bunch of transformations (M code in PowerQuery):
                                 <ul>
-                                    <li>Cleaning Improvement tabe</li>
+                                    <li>Cleaning Improvement table</li>
                                     <li>Cleaning Document table</li>
                                     <li>Meshing Plan, Fact, Budget, Forecast tables</li>
                                     <li>Adding custom attributes to all tables</li>
@@ -228,10 +237,106 @@
                                 All of the above i had to move to PowerQuery level since there was limited accessibility to the DB where i could ve moved all the logic of transformations.
                             </p>
                             <p>
-
+                                Transformations in M code included:
+                                <ul>
+                                    <li>Flatteing and joining four tables of Fact, Plan, Budget and Forecast into one single table with doc ID and attributes</li>
+                                    <li>Making a table which has only three main columns: Improvement ID & Year & Segment (we need this to make the model work)</li>
+                                    <li>Removing unneccessary columns in all tables, cleaning data (nulls, filtering, grouping)</li>
+                                    <li>Adding segments to Plan-Fact-Forecast-Budget table (this one was the most trickest transformation in M code)</li>
+                                </ul>
+                                The last item was trickiest since the original Segment (department) in the Improvement table was not split between several zones of implementation. 
+                                So i had to add additional table with Segments split to the Plan-Fact-Forecast-Budget table. 
+                            </p>
+                            <p>
+                                As a result you can see the model (screenshot above) which has the following idea:  
+                                <ul>
+                                    <li>I use a special table <b>DOC_YEAR_LINK</b> to filter the Improvements table according to our <b>YEAR</b> filter</li>
+                                    <li>Connection between IMPROVEMENTS and DOC_YEAR_LINK tables is bidirectional</li>
+                                    <li>To bring YEAR filter to the PROJECTION table i use TREATAS function (DAX)</li>
+                                    <li>To filter</li>
+                                    <li>I used several more deactivated connections to use them later for other metrics</li>
+                                </ul>
+                            </p>
+                            <p>
+                                So the main idea of this model was to bring two main attributes to the special table called DOC_YEAR_LINK, then filter the IMPROVEMENTS table 
+                                and propagate filters to the PROJECTION table with TREATAS function.
                             </p>
 
+                            <p>
+                                I would call this model <b>UNBALANCED</b> since the main fact table (IMPROVEMENTS) doest really contain all the low level data needed to show & split
+                                the numbers & segments of implementation. Though it s needed to capture main input data from the high level table. 
+                            </p>
+
+                            <h2>Measures</h2>
+                            <p>
+                                Most of the measures are simple but a few measures i d like to point out:
+                                <ul>
+                                    <li>Above requirement <a href="#specialReq"><b>here</b></a> stated that we need to check the Forecast-Budget-Plan (in that order) 
+                                         columns and see which one is not blank and pick up monthly number from that one (the numbers will be used to calculate the Forecast)</li>
+                                    <li>
+                                        Logic for Forecast bar (in the chart)
+                                    </li>
+                                </ul>
+                            </p>
+                            <p>
+                                So let me show the measure here (where we need to check the Forecast-Budget-Plan) and then run down the logic:
+                            </p>
+                            <pre>
+                                <code class="language-css">
+        VAR _selectedMon = FIRSTNONBLANK('PROJECTION'[_monNum],1)
+
+        VAR _table = ADDCOLUMNS( 
+            
+                        'PROJECTION'
+                        ,"@@forecast"
+                            ,VAR _forecast = CALCULATE(
+                                SUM(PROJECTION[_forecastSPL])
+                                ,FILTER('PROJECTION'
+                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
+                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
+        
+                            VAR _budget = CALCULATE(
+                                                SUM(PROJECTION[_budgetSPL])
+                                                ,FILTER('PROJECTION'
+                                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
+                                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
+        
+                            VAR _plan = CALCULATE(
+                                                SUM(PROJECTION[_planSPL])
+                                                ,FILTER('PROJECTION'
+                                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
+                                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
+                            RETURN
+                            
+                                SWITCH(TRUE()
+                                    ,NOT(ISBLANK(_forecast))
+                                        ,[_forecastSPL]
+                                    ,ISBLANK(_forecast) && NOT(ISBLANK(_budget))
+                                        ,[_budgetSPL]
+                                    ,ISBLANK(_forecast) && ISBLANK(_budget) && NOT(ISBLANK(_plan))
+                                        ,[_planSPL]))
+        
+        RETURN
+        
+        CALCULATE(
+            SUMX(_table,[@@forecast])
+                ,TREATAS(VALUES('YEAR'[_year]),'PROJECTION'[_year])
+                ,TREATAS(VALUES(DOC_YEAR_LINK[_segment]),'PROJECTION'[_segment])
+                ,FILTER(ALLEXCEPT('PROJECTION','PROJECTION'[_segment]),
+                        'PROJECTION'[_monNum] <= _selectedMon)
+        ) / 1000
+                                </code>
+                            </pre>
        
+                            <p>
+                                The logic here s the following:
+                                <ul>
+                                    <li>First we capture the the month (since this measure is used in the bar chart with monthly bars)</li>
+                                    <li>Then we calculate virtual table (VAR _table) with additional columns (where we check if the full year is not null in each column</li>
+                                    <li>Then we create another column in that table to calculate monthly numbers for FORECAST column</li>
+                                    <li>Finally we sum that special column getting number to show as FORECAST</li>
+                                </ul>
+                            </p>
 
                     </div> <!-- end entry content -->
 
