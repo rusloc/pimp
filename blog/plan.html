@@ -284,13 +284,10 @@
 
                             <h2>Measures</h2>
                             <p>
-                                Most of the measures are simple but a few measures i d like to point out:
+                                Most of the measures are simple or advanced but one measure i d like to point out:
                                 <ul>
                                     <li>Above requirement <a href="#specialReq"><b>here</b></a> stated that we need to check the Forecast-Budget-Plan (in that order) 
                                          columns and see which one is not blank and pick up monthly number from that one (the numbers will be used to calculate the Forecast)</li>
-                                    <li>
-                                        Logic for Forecast bar (in the chart)
-                                    </li>
                                 </ul>
                             </p>
                             <p>
@@ -298,61 +295,69 @@
                             </p>
                             <pre>
                                 <code class="language-css">
-        VAR _selectedMon = FIRSTNONBLANK('PROJECTION'[_monNum],1)
+    VAR _selectedMon = FIRSTNONBLANK('PROJECTION'[_monNum],1)
 
-        VAR _table = ADDCOLUMNS( 
-            
-                        'PROJECTION'
-                        ,"@@forecast"
-                            ,VAR _forecast = CALCULATE(
+    RETURN
+
+        CALCULATE(
+            SUMX(
+                ADDCOLUMNS( 
+                    'PROJECTION'
+                    ,"@@forecast"
+                        ,VAR _forecast = 
+                            CALCULATE(
                                 SUM(PROJECTION[_forecastSPL])
                                 ,FILTER('PROJECTION'
                                     ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
                                     && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
-        
-                            VAR _budget = CALCULATE(
-                                                SUM(PROJECTION[_budgetSPL])
-                                                ,FILTER('PROJECTION'
-                                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
-                                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
-        
-                            VAR _plan = CALCULATE(
-                                                SUM(PROJECTION[_planSPL])
-                                                ,FILTER('PROJECTION'
-                                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
-                                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
-                            RETURN
-                            
-                                SWITCH(TRUE()
-                                    ,NOT(ISBLANK(_forecast))
-                                        ,[_forecastSPL]
-                                    ,ISBLANK(_forecast) && NOT(ISBLANK(_budget))
-                                        ,[_budgetSPL]
-                                    ,ISBLANK(_forecast) && ISBLANK(_budget) && NOT(ISBLANK(_plan))
-                                        ,[_planSPL]))
-        
-        RETURN
-        
-        CALCULATE(
-            SUMX(_table,[@@forecast])
+
+                        VAR _budget = 
+                            CALCULATE(
+                                SUM(PROJECTION[_budgetSPL])
+                                ,FILTER('PROJECTION'
+                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
+                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
+
+                        VAR _plan = 
+                            CALCULATE(
+                                SUM(PROJECTION[_planSPL])
+                                ,FILTER('PROJECTION'
+                                    ,'PROJECTION'[UNIDInit] = EARLIER(PROJECTION[UNIDInit])
+                                    && 'PROJECTION'[_year] = EARLIER(PROJECTION[_year])))
+                        RETURN
+                            SWITCH(TRUE()
+                                ,NOT(ISBLANK(_forecast))
+                                    ,[_forecastSPL]
+                                ,ISBLANK(_forecast) && NOT(ISBLANK(_budget))
+                                    ,[_budgetSPL]
+                                ,ISBLANK(_forecast) && ISBLANK(_budget) && NOT(ISBLANK(_plan))
+                                    ,[_planSPL]))
+                    ,[@@forecast])
                 ,TREATAS(VALUES('YEAR'[_year]),'PROJECTION'[_year])
                 ,TREATAS(VALUES(DOC_YEAR_LINK[_segment]),'PROJECTION'[_segment])
-                ,FILTER(ALLEXCEPT('PROJECTION','PROJECTION'[_segment]),
+                ,FILTER(ALL('PROJECTION'),
                         'PROJECTION'[_monNum] <= _selectedMon)
-        ) / 1000
+        )
                                 </code>
                             </pre>
        
                             <p>
                                 The logic here s the following:
                                 <ul>
-                                    <li>First we capture the the month (since this measure is used in the bar chart with monthly bars)</li>
-                                    <li>Then we calculate virtual table (VAR _table) with additional columns (where we check if the full year is not null in each column</li>
-                                    <li>Then we create another column in that table to calculate monthly numbers for FORECAST column</li>
-                                    <li>Finally we sum that special column getting number to show as FORECAST</li>
+                                    <li>First we capture the month (since this measure is used in the bar chart with monthly bars)</li>
+                                    <li>In the RETURN statement we manage all calculations that is:
+                                        <ul>
+                                            <li>We iterate with SUMX over a virtual table created with ADDCOLUMNS</li>
+                                            <li>In ADDCOLUMNS function we check the SUM of each column (eg Forecast, Budget, Plan) for total year</li>
+                                            <li>And then check with SWITCH which column is not empty pushing the numbers to the @@forecast column</li>
+                                            <li>Finally we apply some filters with TREATAS</li>
+                                        </ul>
+                                    </li>
+                                    
                                 </ul>
-                                This is a good case of using EARLIER function (just served well for the purpose IMHO) with a virtual table.
                             </p>
+                            <p>The shown measure is then used in a wrapper measure where i use additional logic on top conditionally showing numbers for the previous months.</p>
+                            <p>This is a good case of using EARLIER function (just served well for the purpose IMHO) with a virtual table.</p>
                             <p>
                                 There was a good bunch of more calculations but i leave them out of this blog since i picked only one that was interesting and the main purpose 
                                 of this post is showing the dashboard.
