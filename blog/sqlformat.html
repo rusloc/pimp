@@ -183,201 +183,201 @@
 
     <pre>
         <code class="language-css">
+/*
+    Logic: 
+        * create CTE that will be later used for aggregation
+        * later we need to make a separate query for each step
+        * finally we join all steps with UNION
+*/
+    with _main as (
+        select
+            coalesce(d3._date, d4._date)	                                    _date
+            ,coalesce(d3._source, d4._source)									_source
+            ,coalesce(d3._enterprise, d4._enterprise)							_enterprise
+            ,coalesce(d3._group, d4._group)										_group
+            ,coalesce(d3._entGroup, d4._entGroup)								_entGroup
+            ,[_load_plan_month]
+            ,[_load_fact_month]
+            ,[_load_delta_month]
+            ,[_load_plan_NET]
+            ,[_loadRW_fact_month]
+            ,[_loadRW_delta_month]
+            ,[_loadRW_plan_NET]
+            ,[_loadHybrid_fact_month]
+            ,[_loadHybrid_delta_month]
+            ,[_loadHybrid_plan_NET]
+        from [PAC].[dbo].[_mea_3_table] d3
+        full join [PAC].[dbo].[_mea_4_table] d4
+            on d3._date = d4._date	
+            and d3._group = d4._group
+            and d3._entGroup = d4._entGroup)
+-- ################################### Total ###################################
+    select
+        _date
+        ,_entGroup																_enterprise
+        ,N'Total'																_cat
+        ,sum(coalesce([_load_fact_month],0) 
+            + coalesce([_loadRW_fact_month],0) 
+            + coalesce([_loadHybrid_fact_month],0))		                        _fact
+        ,sum(coalesce([_load_plan_NET],0) 
+            + coalesce([_loadRW_plan_NET],0) 
+            + coalesce([_loadHybrid_plan_NET],0))				                _plan
+    from _main
+    where 1=1
+        and _source = N'office'
+    group by 
+        _date
+        ,_entGroup
+        ,_source
+union all
+-- ################################### Subcon ###################################
+    select
+        _date
+        ,_entGroup																_enterprise
+        ,N'subcon'																_cat
+        ,sum(coalesce([_load_fact_month],0) 
+            + coalesce([_loadRW_fact_month],0) 
+            + coalesce([_loadHybrid_fact_month],0))		                        _fact
+        ,sum(coalesce([_load_plan_NET],0) 
+            + coalesce([_loadRW_plan_NET],0) 
+            + coalesce([_loadHybrid_plan_NET],0))				                _plan
+    from _main
+    where 1=1
+        and _source = N'subcontractor'
+    group by 
+        _date
+        ,_entGroup
+        ,_source
+union all
+-- ################################### Own ###################################
+    select	
+        _date
+        ,_enterprise
+        ,N'Own'																	_cat
+        ,_fact_TOTAL - _fact_SUB												_fact
+        ,_plan_TOTAL - _plan_SUB												_plan
     /*
-        Logic: 
-            * create CTE that will be later used for aggregation
-            * later we need to make a separate query for each step
-            * finally we join all steps with UNION
+        below we transpose rows
     */
-        with _main as (
-            select
-                coalesce(d3._date, d4._date)												                                        _date
-                ,coalesce(d3._source, d4._source)											                                        _source
-                ,coalesce(d3._enterprise, d4._enterprise)									                                        _enterprise
-                ,coalesce(d3._group, d4._group)												                                        _group
-                ,coalesce(d3._entGroup, d4._entGroup)										                                        _entGroup
-                ,[_load_plan_month]
-                ,[_load_fact_month]
-                ,[_load_delta_month]
-                ,[_load_plan_NET]
-                ,[_loadRW_fact_month]
-                ,[_loadRW_delta_month]
-                ,[_loadRW_plan_NET]
-                ,[_loadHybrid_fact_month]
-                ,[_loadHybrid_delta_month]
-                ,[_loadHybrid_plan_NET]
-            from [PAC].[dbo].[_mea_3_table] d3
-            full join [PAC].[dbo].[_mea_4_table] d4
-                on d3._date = d4._date	
-                and d3._group = d4._group
-                and d3._entGroup = d4._entGroup)
-    -- ################################### Total ###################################
-        select
+    from (
+        select	
             _date
-            ,_entGroup																												_enterprise
-            ,N'Total'																												_cat
-            ,sum(coalesce([_load_fact_month],0) 
-                + coalesce([_loadRW_fact_month],0) 
-                + coalesce([_loadHybrid_fact_month],0))		                                                                        _fact
-            ,sum(coalesce([_load_plan_NET],0) 
-                + coalesce([_loadRW_plan_NET],0) 
-                + coalesce([_loadHybrid_plan_NET],0))				                                                                _plan
+            ,_entGroup															_enterprise
+            ,sum(
+                case 
+                    when _source = N'office'
+                        then coalesce([_load_plan_NET],0) 
+                        + coalesce([_loadRW_plan_NET],0) 
+                        + coalesce([_loadHybrid_plan_NET],0)
+                    else 0 end)													_plan_TOTAL
+            ,sum(
+                case 
+                    when _source = N'office'
+                        then coalesce([_load_fact_month],0) 
+                        + coalesce([_loadRW_fact_month],0) 
+                        + coalesce([_loadHybrid_fact_month],0)
+                    else 0 end)													_fact_TOTAL
+            ,sum(
+                case 
+                    when _source = N'subcontractor'
+                        then coalesce([_load_plan_NET],0) 
+                        + coalesce([_loadRW_plan_NET],0) 
+                        + coalesce([_loadHybrid_plan_NET],0)
+                    else 0 end)													_plan_SUB
+            ,sum(
+                case 
+                    when _source = N'subcontractor'
+                        then coalesce([_load_fact_month],0) 
+                        + coalesce([_loadRW_fact_month],0) 
+                        + coalesce([_loadHybrid_fact_month],0)
+                    else 0 end)													_fact_SUB
         from _main
-        where 1=1
-            and _source = N'office'
-        group by 
+        group by
             _date
-            ,_entGroup
-            ,_source
-    union all
-    -- ################################### Subcon ###################################
-        select
-            _date
-            ,_entGroup																												_enterprise
-            ,N'subcon'																												_cat
-            ,sum(coalesce([_load_fact_month],0) 
-                + coalesce([_loadRW_fact_month],0) 
-                + coalesce([_loadHybrid_fact_month],0))		                                                                        _fact
-            ,sum(coalesce([_load_plan_NET],0) 
-                + coalesce([_loadRW_plan_NET],0) 
-                + coalesce([_loadHybrid_plan_NET],0))				                                                                _plan
-        from _main
-        where 1=1
-            and _source = N'subcontractor'
-        group by 
-            _date
-            ,_entGroup
-            ,_source
-    union all
-    -- ################################### Own ###################################
+            ,_entGroup) t
+union all
+-- ################################### Trucks ###################################
         select	
             _date
             ,_enterprise
-            ,N'Own'																			                                        _cat
-            ,_fact_TOTAL - _fact_SUB															                                    _fact
-            ,_plan_TOTAL - _plan_SUB															                                    _plan
+            ,N'В тч. Авто'														_cat
+            ,_fact_TOTAL - _fact_SUB											_fact
+            ,_plan_TOTAL - _plan_SUB											_plan
         /*
             below we transpose rows
         */
         from (
             select	
                 _date
-                ,_entGroup																					_enterprise
+                ,_entGroup														_enterprise
                 ,sum(
                     case 
                         when _source = N'office'
-                            then coalesce([_load_plan_NET],0) 
-                            + coalesce([_loadRW_plan_NET],0) 
-                            + coalesce([_loadHybrid_plan_NET],0)
-                        else 0 end)																			_plan_TOTAL
+                            then [_load_fact_month]
+                        else 0 end)												_fact_TOTAL
                 ,sum(
                     case 
                         when _source = N'office'
-                            then coalesce([_load_fact_month],0) 
-                            + coalesce([_loadRW_fact_month],0) 
-                            + coalesce([_loadHybrid_fact_month],0)
-                        else 0 end)																			_fact_TOTAL
+                            then [_load_plan_NET]
+                        else 0 end)												_plan_TOTAL
                 ,sum(
                     case 
                         when _source = N'subcontractor'
-                            then coalesce([_load_plan_NET],0) 
-                            + coalesce([_loadRW_plan_NET],0) 
-                            + coalesce([_loadHybrid_plan_NET],0)
-                        else 0 end)																			_plan_SUB
+                            then [_load_fact_month] 
+                        else 0 end)												_fact_SUB
                 ,sum(
                     case 
                         when _source = N'subcontractor'
-                            then coalesce([_load_fact_month],0) 
-                            + coalesce([_loadRW_fact_month],0) 
-                            + coalesce([_loadHybrid_fact_month],0)
-                        else 0 end)																			_fact_SUB
+                            then [_load_plan_NET] 
+                        else 0 end)												_plan_SUB
             from _main
             group by
                 _date
                 ,_entGroup) t
-    union all
-    -- ################################### Trucks ###################################
+union all
+-- ################################### Other ###################################
+        select	
+            _date
+            ,_enterprise
+            ,N'Inc. other'														_cat
+            ,_fact_TOTAL - _fact_SUB											_fact
+            ,_plan_TOTAL - _plan_SUB											_plan
+        /*
+            below we transpose rows
+        */
+        from (
             select	
                 _date
-                ,_enterprise
-                ,N'В тч. Авто'																					                   _cat
-                ,_fact_TOTAL - _fact_SUB																		                   _fact
-                ,_plan_TOTAL - _plan_SUB																		                   _plan
-            /*
-                below we transpose rows
-            */
-            from (
-                select	
-                    _date
-                    ,_entGroup																					_enterprise
-                    ,sum(
-                        case 
-                            when _source = N'office'
-                                then [_load_fact_month]
-                            else 0 end)																			_fact_TOTAL
-                    ,sum(
-                        case 
-                            when _source = N'office'
-                                then [_load_plan_NET]
-                            else 0 end)																			_plan_TOTAL
-                    ,sum(
-                        case 
-                            when _source = N'subcontractor'
-                                then [_load_fact_month] 
-                            else 0 end)																			_fact_SUB
-                    ,sum(
-                        case 
-                            when _source = N'subcontractor'
-                                then [_load_plan_NET] 
-                            else 0 end)																			_plan_SUB
-                from _main
-                group by
-                    _date
-                    ,_entGroup) t
-    union all
-    -- ################################### Other ###################################
-            select	
+                ,_entGroup														_enterprise
+                ,sum(
+                    case 
+                        when _source = N'office'
+                            then coalesce([_loadRW_fact_month],0) 
+                            + coalesce([_loadHybrid_fact_month],0)
+                        else 0 end)												_fact_TOTAL
+                ,sum(
+                    case 
+                        when _source = N'office'
+                            then coalesce([_loadRW_plan_NET],0) 
+                            + coalesce([_loadHybrid_plan_NET],0)
+                        else 0 end)												_plan_TOTAL
+                ,sum(
+                    case 
+                        when _source = N'subcontractor'
+                            then coalesce([_loadRW_fact_month],0) 
+                            + coalesce([_loadHybrid_fact_month],0)
+                        else 0 end)												_fact_SUB
+                ,sum(
+                    case 
+                        when _source = N'subcontractor'
+                            then coalesce([_loadRW_plan_NET],0) 
+                            + coalesce([_loadHybrid_plan_NET],0)
+                        else 0 end)												_plan_SUB
+            from _main
+            group by
                 _date
-                ,_enterprise
-                ,N'Inc. other'																					                _cat
-                ,_fact_TOTAL - _fact_SUB																		                _fact
-                ,_plan_TOTAL - _plan_SUB																		                _plan
-            /*
-                below we transpose rows
-            */
-            from (
-                select	
-                    _date
-                    ,_entGroup																					_enterprise
-                    ,sum(
-                        case 
-                            when _source = N'office'
-                                then coalesce([_loadRW_fact_month],0) 
-                                + coalesce([_loadHybrid_fact_month],0)
-                            else 0 end)																			_fact_TOTAL
-                    ,sum(
-                        case 
-                            when _source = N'office'
-                                then coalesce([_loadRW_plan_NET],0) 
-                                + coalesce([_loadHybrid_plan_NET],0)
-                            else 0 end)																			_plan_TOTAL
-                    ,sum(
-                        case 
-                            when _source = N'subcontractor'
-                                then coalesce([_loadRW_fact_month],0) 
-                                + coalesce([_loadHybrid_fact_month],0)
-                            else 0 end)																			_fact_SUB
-                    ,sum(
-                        case 
-                            when _source = N'subcontractor'
-                                then coalesce([_loadRW_plan_NET],0) 
-                                + coalesce([_loadHybrid_plan_NET],0)
-                            else 0 end)																			_plan_SUB
-                from _main
-                group by
-                    _date
-                    ,_entGroup
-                    ) t
+                ,_entGroup
+                ) t
         </code>
     </pre>
 
