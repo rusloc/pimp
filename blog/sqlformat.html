@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TJ6T895');</script>
+    <!-- End Google Tag Manager -->
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Time utilization funnel chart</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/vendor.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="../js/modernizr.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body class="ss-bg-white">
+
+
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ6T895"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="top" class="s-wrap site-wrapper"></div>
+         <!-- site header
+        ================================================== -->
+        <header class="s-header">
+
+            <div class="header__top">
+                <div class="header__logo">
+                    <a class="site-logo" href="../index.html">
+                        <p class="mainLogo">pimp.my.bi</p>
+                    </a>
+                </div>
+            </div> <!-- end header__top -->
+
+            <nav class="header__nav-wrap">
+
+                <ul class="header__nav">
+                    <li><a href="../index.html" title="">Home</a></li>
+                    <li><a href="../page-about.html" title="">About</a></li>
+                    <li><a href="../page-contact.html" title="">Contact</a></li>
+                </ul> <!-- end header__nav -->
+
+                <ul class="header__social">
+                    <li class="ss-linked">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Linkedin</span>
+                        </a>
+                    </li>
+                    <li class="ss-facebook">
+                        <a href="https://www.facebook.com">
+                            <span class="screen-reader-text">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="ss-upwork">
+                        <a href="https://www.upwork.com/freelancers/~011afab395f15a047f">
+                            <span class="screen-reader-text">Upwork</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav> <!-- end header__nav-wrap -->
+
+            <!-- menu toggle -->
+            <a href="#0" class="header__menu-toggle">
+                <span>Menu</span>
+            </a>
+
+        </header> <!-- end s-header -->
+
+
+        <!-- search-block -->
+        <div class="s-search">
+
+            <div class="search-block">
+    
+                <form role="search" method="get" class="search-form" action="#">
+                    <label>
+                        <span class="hide-content">Ping me in <a href="http://www.t.me/cirob">Telegram</a> or send <a class="popupLink" href="mailto: pimp.my.bi@gmail.com">Email</a></span>
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+    
+                <a href="#0" title="Close Search" class="search-close">Close</a>
+    
+            </div> 
+        <!-- end search-block -->
+
+            <!-- search modal trigger -->
+            <a href="#0" class="search-trigger">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"/> </g> </svg>  
+                <span>contact</span>
+            </a>
+            <span class="search-line"></span>
+
+        </div> 
+        <!-- end s-search -->
+
+
+        <!-- site content
+        ================================================== -->
+        <div class="s-content content">
+            <main class="row content__page">
+                
+                <article class="column large-full entry format-standard">
+
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            How to properly format your SQL code for readability.
+                        </h1>
+
+                    </div> 
+
+                    <!-- <div class="media-wrap entry__media">
+                        <div class="entry__post-thumb">
+                            <img src="../images/thumbs/time_funnel/funnel_chart_preview_1000.png" 
+                                 srcset="../images/thumbs/time_funnel/funnel_chart_preview_2000.png 2000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_1000.png 1000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                    </div> -->
+                    
+                    <!-- end entry__header -->
+
+                    <div class="entry__content">
+    
+                        <p class="lead drop-cap">
+                            Throughout the years of working with SQL i came across many legacy sripts that are badly formatted or even 
+                            not formatted at all. When you start reading them you couldn't even find where to start. No comments,
+                            no formatting leads to hours spent just understanding what s going on in the code. After spending those 
+                            hours and learning from other people i made a certain rules for myself how to write code that s easy 
+                            to read and understand.
+                        </p>
+                        <h2>
+                            The code
+                        </h2>
+                        <p>
+                            So lets start with the code sample straight away and below the code i ll describe the rules i use when formatting.
+                            This code is not complicated and is not the longest. But if there s no formatting applied it would take a while to 
+                            figure out where to start and what s the logic behind the code.
+                        </p>
+
+    <pre>
+        <code class="language-css">
+    /*
+        Logic: 
+            * create CTE that will be later used for aggregation
+            * later we need to make a separate query for each step
+            * finally we join all steps with UNION
+    */
+        with _main as (
+            select
+                coalesce(d3._date, d4._date)												                                        _date
+                ,coalesce(d3._source, d4._source)											                                        _source
+                ,coalesce(d3._enterprise, d4._enterprise)									                                        _enterprise
+                ,coalesce(d3._group, d4._group)												                                        _group
+                ,coalesce(d3._entGroup, d4._entGroup)										                                        _entGroup
+                ,[_load_plan_month]
+                ,[_load_fact_month]
+                ,[_load_delta_month]
+                ,[_load_plan_NET]
+                ,[_loadRW_fact_month]
+                ,[_loadRW_delta_month]
+                ,[_loadRW_plan_NET]
+                ,[_loadHybrid_fact_month]
+                ,[_loadHybrid_delta_month]
+                ,[_loadHybrid_plan_NET]
+            from [PAC].[dbo].[_mea_3_table] d3
+            full join [PAC].[dbo].[_mea_4_table] d4
+                on d3._date = d4._date	
+                and d3._group = d4._group
+                and d3._entGroup = d4._entGroup)
+    -- ################################### Total ###################################
+        select
+            _date
+            ,_entGroup																												_enterprise
+            ,N'Total'																												_cat
+            ,sum(coalesce([_load_fact_month],0) + coalesce([_loadRW_fact_month],0) + coalesce([_loadHybrid_fact_month],0))		    _fact
+            ,sum(coalesce([_load_plan_NET],0) + coalesce([_loadRW_plan_NET],0) + coalesce([_loadHybrid_plan_NET],0))				_plan
+        from _main
+        where 1=1
+            and _source = N'office'
+        group by 
+            _date
+            ,_entGroup
+            ,_source
+    union all
+    -- ################################### Subcon ###################################
+        select
+            _date
+            ,_entGroup																												_enterprise
+            ,N'subcon'																												_cat
+            ,sum(coalesce([_load_fact_month],0) + coalesce([_loadRW_fact_month],0) + coalesce([_loadHybrid_fact_month],0))		    _fact
+            ,sum(coalesce([_load_plan_NET],0) + coalesce([_loadRW_plan_NET],0) + coalesce([_loadHybrid_plan_NET],0))				_plan
+        from _main
+        where 1=1
+            and _source = N'subcontractor'
+        group by 
+            _date
+            ,_entGroup
+            ,_source
+    union all
+    -- ################################### Own ###################################
+        select	
+            _date
+            ,_enterprise
+            ,N'Own'																			                                        _cat
+            ,_fact_TOTAL - _fact_SUB															                                    _fact
+            ,_plan_TOTAL - _plan_SUB															                                    _plan
+        /*
+            below we transpose rows
+        */
+        from (
+            select	
+                _date
+                ,_entGroup																					_enterprise
+                ,sum(
+                    case 
+                        when _source = N'office'
+                            then coalesce([_load_plan_NET],0) 
+                            + coalesce([_loadRW_plan_NET],0) 
+                            + coalesce([_loadHybrid_plan_NET],0)
+                        else 0 end)																			_plan_TOTAL
+                ,sum(
+                    case 
+                        when _source = N'office'
+                            then coalesce([_load_fact_month],0) 
+                            + coalesce([_loadRW_fact_month],0) 
+                            + coalesce([_loadHybrid_fact_month],0)
+                        else 0 end)																			_fact_TOTAL
+                ,sum(
+                    case 
+                        when _source = N'subcontractor'
+                            then coalesce([_load_plan_NET],0) 
+                            + coalesce([_loadRW_plan_NET],0) 
+                            + coalesce([_loadHybrid_plan_NET],0)
+                        else 0 end)																			_plan_SUB
+                ,sum(
+                    case 
+                        when _source = N'subcontractor'
+                            then coalesce([_load_fact_month],0) 
+                            + coalesce([_loadRW_fact_month],0) 
+                            + coalesce([_loadHybrid_fact_month],0)
+                        else 0 end)																			_fact_SUB
+            from _main
+            group by
+                _date
+                ,_entGroup) t
+    union all
+    -- ################################### Trucks ###################################
+            select	
+                _date
+                ,_enterprise
+                ,N'В тч. Авто'																					                   _cat
+                ,_fact_TOTAL - _fact_SUB																		                   _fact
+                ,_plan_TOTAL - _plan_SUB																		                   _plan
+            /*
+                below we transpose rows
+            */
+            from (
+                select	
+                    _date
+                    ,_entGroup																					_enterprise
+                    ,sum(
+                        case 
+                            when _source = N'office'
+                                then [_load_fact_month]
+                            else 0 end)																			_fact_TOTAL
+                    ,sum(
+                        case 
+                            when _source = N'office'
+                                then [_load_plan_NET]
+                            else 0 end)																			_plan_TOTAL
+                    ,sum(
+                        case 
+                            when _source = N'subcontractor'
+                                then [_load_fact_month] 
+                            else 0 end)																			_fact_SUB
+                    ,sum(
+                        case 
+                            when _source = N'subcontractor'
+                                then [_load_plan_NET] 
+                            else 0 end)																			_plan_SUB
+                from _main
+                group by
+                    _date
+                    ,_entGroup) t
+    union all
+    -- ################################### Other ###################################
+            select	
+                _date
+                ,_enterprise
+                ,N'Inc. other'																					                _cat
+                ,_fact_TOTAL - _fact_SUB																		                _fact
+                ,_plan_TOTAL - _plan_SUB																		                _plan
+            /*
+                below we transpose rows
+            */
+            from (
+                select	
+                    _date
+                    ,_entGroup																					_enterprise
+                    ,sum(
+                        case 
+                            when _source = N'office'
+                                then coalesce([_loadRW_fact_month],0) 
+                                + coalesce([_loadHybrid_fact_month],0)
+                            else 0 end)																			_fact_TOTAL
+                    ,sum(
+                        case 
+                            when _source = N'office'
+                                then coalesce([_loadRW_plan_NET],0) 
+                                + coalesce([_loadHybrid_plan_NET],0)
+                            else 0 end)																			_plan_TOTAL
+                    ,sum(
+                        case 
+                            when _source = N'subcontractor'
+                                then coalesce([_loadRW_fact_month],0) 
+                                + coalesce([_loadHybrid_fact_month],0)
+                            else 0 end)																			_fact_SUB
+                    ,sum(
+                        case 
+                            when _source = N'subcontractor'
+                                then coalesce([_loadRW_plan_NET],0) 
+                                + coalesce([_loadHybrid_plan_NET],0)
+                            else 0 end)																			_plan_SUB
+                from _main
+                group by
+                    _date
+                    ,_entGroup
+                    ) t
+        </code>
+    </pre>
+
+
+                        <h2>The rules</h2>
+           
+                            <p>
+                                This sample above shows all of the rules i follow, namely:
+                                <ul>
+                                    <li>
+                                        <b>Comments</b>: start commenting your code!!! No one knows what s happening in your head, 
+                                        what s the logic & transformations you apply. 
+                                        Dont make other people who probably will inherit the code feel lost in the mess you made. 
+                                        Use one-line comments for short notes (like: <b>"--"</b>) or multi-line comments (like: <b>"/* ... */"</b>) 
+                                        to describe general logic.                                     
+                                    </li>
+                                    <li>
+                                        <b>Indentation</b>: it s absolutely neccessary for understanding the blocks of the code. Blocks allow 
+                                        you to see the map of your solution (eg modules and their connections).
+                                    </li>
+                                    <li>
+                                        <b>Commas</b>: so many times i lost them (i bet you too) which lead to execution errors and then to 
+                                        scanning the code trying to find the place where you lost one. Here s the rule: put comma infront 
+                                        of the column selection. You will never lose it. And you wont need to jump one line up-down to see 
+                                        if you lost it.  
+                                    </li>
+                                    <li>
+                                        <b>Add "1"</b>: adding to the point above you can put "1" as your first column so when commenting 
+                                        out other column wont break the code.
+                                    </li>
+                                    <li>
+                                        <b>New lines</b>: use new lines to separate functions like <b>SUM</b>, <b>CASE WHEN</b> etc.
+                                        Yes this will make you code more sparse but it will add to readability as well. 
+                                        Also new lines allow for quick "commenting out" the columns you want to exclude.
+                                    </li>
+                                    <li>
+                                        <b>Alias</b>: dont mix everything. What i mean: make two general vertical areas where you can see the original 
+                                        columns and aliases (see my sample above). On the left side i list all the columns i need in the <b>SELECT</b>
+                                        statement and on the right side i leave all the aliases. 
+                                    </li>
+                                    <li>
+                                        <b>Naming</b>: i prefer (and do recommend) to use your custom names starting with <b>"_"</b> (underscore).
+                                        In some cases this maybe too much but mostly it s a good practice to separate original names from the ones 
+                                        you create for the script (aliases for example).
+                                    </li>
+                                    <li>
+                                        <b>Comment breaks</b>: break your code with comments that visualy allow for chunks separation. Use this
+                                        <b>"--######### NEW BLOCK #########"</b> for example. Someone who will read the code will easily see
+                                        those chunks without guessing.
+                                    </li>
+                                    <li>
+                                        <b>Where clause</b>: when using <b>WHERE</b> clause add one dull condition: <b>1=1</b>. It will make 
+                                        adding and deleting conditions in the WHERE cluase easier (commenting out extra conditions wont break the code).
+                                    </li>
+                                </ul>
+                            </p>
+                            
+                            <p>
+                                While these rules might be agruable i use them in the code i write and didnt hear any negative reactions from 
+                                people who use my code later on. Also when i have to return and amend or debug the code i act as a new 
+                                user (since i forget the code as well) and these rules make my life much easier.
+
+                            </p>
+                            <p>
+                                That s it folks. 
+                            </p>
+    
+                    </div> <!-- end entry content -->
+
+                </article> <!-- end column large-full entry-->
+
+
+       
+            </main>
+
+        </div> <!-- end s-content -->
+
+
+        <!-- footer
+        ================================================== -->
+        <footer class="s-footer footer">
+            <div class="row">
+                <div class="column large-full footer__content">
+                    <div class="footer__copyright">
+                        <span>© pimpmybi 2023</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"></a>
+            </div>
+        </footer>
+
+    </div> <!-- end s-wrap -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/plugins.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>
