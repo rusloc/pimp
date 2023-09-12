@@ -169,7 +169,7 @@
                             Throughout the years of working with SQL i came across many legacy sripts that are badly formatted or even 
                             not formatted at all. When you start reading them you couldn't even find where to start. No comments,
                             no formatting leads to hours spent just understanding what s going on in the code. After spending those 
-                            hours and learning from other people i made a certain rules for myself how to write code that s easy 
+                            hours and learning from other people i made a set of certain rules for myself how to write code that s easy 
                             to read and understand.
                         </p>
                         <h2>
@@ -216,8 +216,12 @@
             _date
             ,_entGroup																												_enterprise
             ,N'Total'																												_cat
-            ,sum(coalesce([_load_fact_month],0) + coalesce([_loadRW_fact_month],0) + coalesce([_loadHybrid_fact_month],0))		    _fact
-            ,sum(coalesce([_load_plan_NET],0) + coalesce([_loadRW_plan_NET],0) + coalesce([_loadHybrid_plan_NET],0))				_plan
+            ,sum(coalesce([_load_fact_month],0) 
+                + coalesce([_loadRW_fact_month],0) 
+                + coalesce([_loadHybrid_fact_month],0))		                                                                        _fact
+            ,sum(coalesce([_load_plan_NET],0) 
+                + coalesce([_loadRW_plan_NET],0) 
+                + coalesce([_loadHybrid_plan_NET],0))				                                                                _plan
         from _main
         where 1=1
             and _source = N'office'
@@ -231,8 +235,12 @@
             _date
             ,_entGroup																												_enterprise
             ,N'subcon'																												_cat
-            ,sum(coalesce([_load_fact_month],0) + coalesce([_loadRW_fact_month],0) + coalesce([_loadHybrid_fact_month],0))		    _fact
-            ,sum(coalesce([_load_plan_NET],0) + coalesce([_loadRW_plan_NET],0) + coalesce([_loadHybrid_plan_NET],0))				_plan
+            ,sum(coalesce([_load_fact_month],0) 
+                + coalesce([_loadRW_fact_month],0) 
+                + coalesce([_loadHybrid_fact_month],0))		                                                                        _fact
+            ,sum(coalesce([_load_plan_NET],0) 
+                + coalesce([_loadRW_plan_NET],0) 
+                + coalesce([_loadHybrid_plan_NET],0))				                                                                _plan
         from _main
         where 1=1
             and _source = N'subcontractor'
