@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+
+    <!-- Google Tag Manager -->
+<script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TJ6T895');
+</script>
+    <!-- End Google Tag Manager -->
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Improvements report</title>
+    <meta name="description" content="Python ETL solution for linear copy of tables from PostgreSQL (PG SQL) to another PG SQL database">
+    <meta name="author" content="Kirill Bezzubkin">
+    <meta name="keywords" content="python, sql, etl, analytics, postgresql">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/vendor.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="../js/modernizr.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body class="ss-bg-white">
+
+
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ6T895"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="top" class="s-wrap site-wrapper"></div>
+         <!-- site header
+        ================================================== -->
+        <header class="s-header">
+
+            <div class="header__top">
+                <div class="header__logo">
+                    <a class="site-logo" href="../index.html">
+                        <p class="mainLogo">pimp.my.bi</p>
+                    </a>
+                </div>
+            </div> <!-- end header__top -->
+
+            <nav class="header__nav-wrap">
+
+                <ul class="header__nav">
+                    <li><a href="../index.html" title="">Home</a></li>
+                    <li><a href="../page-about.html" title="">About</a></li>
+                    <li><a href="../page-contact.html" title="">Contact</a></li>
+                </ul> <!-- end header__nav -->
+
+                <ul class="header__social">
+                    <li class="ss-linked">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Linkedin</span>
+                        </a>
+                    </li>
+                    <li class="ss-facebook">
+                        <a href="https://www.facebook.com">
+                            <span class="screen-reader-text">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="ss-upwork">
+                        <a href="https://www.upwork.com/freelancers/~011afab395f15a047f">
+                            <span class="screen-reader-text">Upwork</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav> <!-- end header__nav-wrap -->
+
+            <!-- menu toggle -->
+            <a href="#0" class="header__menu-toggle">
+                <span>Menu</span>
+            </a>
+
+        </header> 
+        <!-- end s-header -->
+
+
+        <!-- search-block -->
+        <div class="s-search">
+
+            <div class="search-block">
+    
+                <form role="search" method="get" class="search-form" action="#">
+                    <label>
+                        <span class="hide-content">Ping me in <a href="http://www.t.me/cirob">Telegram</a> or send <a class="popupLink" href="mailto: pimp.my.bi@gmail.com">Email</a></span>
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+    
+                <a href="#0" title="Close Search" class="search-close">Close</a>
+    
+            </div> 
+        <!-- end search-block -->
+
+            <!-- search modal trigger -->
+            <a href="#0" class="search-trigger">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"/> </g> </svg>  
+                <span>contact</span>
+            </a>
+            <span class="search-line"></span>
+
+        </div> 
+        <!-- end s-search -->
+
+
+        <!-- site content
+        ================================================== -->
+        <div class="s-content content">
+            <main class="row content__page">
+                
+                <article class="column large-full entry format-standard">
+
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            Python ETL for linear table copy from PG SQL to PG SQL (P2P).
+                        </h1>
+
+                    </div> 
+
+                    <!-- <div class="media-wrap entry__media">
+                        <div class="entry__post-thumb">
+                            <img src="../images/thumbs/time_funnel/funnel_chart_preview_1000.png" 
+                                 srcset="../images/thumbs/time_funnel/funnel_chart_preview_2000.png 2000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_1000.png 1000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                    </div> -->
+                    
+                    <!-- end entry__header -->
+
+                    <div class="entry__content">
+
+                        <p class="lead drop-cap">
+                        This one is going to be about simple linear Python ETL tool (module) i wrote during one of my previous work challenges.
+                        I had to get the ETL process quick (as quick as i could &#129312) to get the data into my DB and start working on the transformations
+                        and reports.
+                        </p>
+
+                        <h2>The code</h2>
+                        <p>
+                            Straight away, here s the code*:
+                            <a href="https://github.com/rusloc/PGMOVE" target="_blank"><b>github.com/rusloc/PGMOVE</b></a>
+                            <br>
+                            <sub>
+                                
+                                    * i m not python coder so that was my solution that worked fine but i bet it lacks optimization, typization and commenting.
+                                
+                            </sub>
+                        </p>
+
+
+
+                        <h2>The definition</h2>
+    
+                        <p>
+                            While working on some full-stack BI solution i had to implement a process (ETL) that copies data from source (PG SQL on VM)
+                            to the destination (another PG SQL on another VM). Since the microservice backend architecture (tables & structure of tables) 
+                            was excessive for analytical tasks i had to cut the number of tables and possible the number of columns.
+                        </p>
+                        <p>
+                            The limitations were:
+                        </p>
+                        <ul>
+                            <li>Get it working fast</li>
+                            <li>Make the ETL linear (since i was going to make all transformations in my DB)</li>
+                            <li>Make ETL automatic</li>
+                            <li>Add reporting functionality (i wanted alerts if the scheduled tasks were success or not)</li>
+                            <li>Add some logging so in case of errors i could trace the problems and fix them</li>
+                            <li>Add a way to configure the settings of the ETL</li>
+                            <li>Use only local VMs since i couldnt use Power BI cloud services for ETL</li>
+                        </ul>
+
+                        <p>
+                            With all these inital settings i went to writing code. Python was the only choice for me.
+                        </p>
+                        <h2>The solution</h2>
+                        <p>
+                            To speed up the process of development i decided to go with linear copy of selected tables and later on adding needed transformations
+                            in the destination DB.
+                        </p>
+                        <p>
+                            Setup was like this:
+                            <ul>
+                                <li>Source VM with PG SQL DB that accumulated data from backend microservice architecture</li>
+                                <li>Destination VM with PG SQL DB that should recieve selected data from the source</li>
+                                <li>Both are in one data center</li>
+                            </ul>
+
+                        </p>
+                        <p>
+                            I went with the solution that comprises the following logical blocks:
+                            <ul>
+                                <li>Python module that does the copying process</li>
+                                <li>Some settings file that holds info like:</li>
+                                    <ul style="list-style-type:circle">
+                                        <li>connection secrets</li>
+                                        <li>table mappings (source to destination)</li>
+                                        <li>some extra data that supports the process</li>
+                                    </ul>
+                                <li>Wrapper (Python script) that calls all needed modules</li>
+                            </ul>
+                        </p>
+                        <p>
+                            First i wrote the main module that extracts the data from the source and copies it into the destination.
+                        </p>
+                        <p>
+                            Then i added one more <i><b>class</b></i> that extends the basic logging python module. That was quite new for me and i
+                            learned the practical way what inheritance was. And generally the OOP principles were handy in the solution.
+                        </p>
+                        <p>
+                            Here s the tgLogger class that sends alerts to Telegram:
+                        </p>
+                        <pre>
+                            <code class="language-css">
+    class tgLog(logging.Handler):
+        
+        '''
+                *******
+                ! DOC !
+                *******
+                
+                Custom handler for logging into TG channel
+                
+                1. inherit __super__
+                2. need to import REQUESTS for session setup
+                3. change original EMIT function
+                
+        '''
+        
+        def __init__(s, chat, key):
+            
+            super().__init__()
+            
+            s._chat = chat
+            s._key = key
+            s._session = requests.Session()
+            
+            
+        def emit(s, message):
+            
+            _text = s.format(message)
+            s._session.post(f'https://api.telegram.org/bot{s._key}/sendMessage?chat_id={s._chat}&text={_text}')
+                            </code>
+                        </pre>
+                    
+                    <sub>
+                        * You can find it here: <a href="https://github.com/rusloc/PGMOVE/blob/main/tgLogger.py" target="_blank"><b>github.com/rusloc/PGMOVE/tgLogger</b></a> and use easily in your project.
+                    </sub>
+                    <br><br>
+                    <p>
+                        It looks very simple yet works fine and does its job with sending messages to the group.
+                    </p>
+                    <p>
+                        There are a few more aspects that took some time to implement:
+                        <ul>
+                            <li>Setting up up loggers and pasting them here&there in the code to monitor the process</li>
+                            <li>Creating SQL query to get the DDL statement of the original table to reproduce the same in the destination</li>
+                        </ul>
+                        So let me show these two aspects.
+                    </p>
+                    <h3>Loggers</h3>
+                    <p>
+                        In the code i initialized three loggers in total: INFO, ERROR, TELEGRAM.
+                    </p>
+            <pre>
+                <code class="language-css">
+            def set_loggers(s):
+            '''
+                Setup loggers: information logger, error logger & telegram logger
+                    Additional subclassed TG logger is required with mutated function.
+                '''
+                
+                _handler = logging.FileHandler('_etl_logger.txt', 'a')
+                _formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - func_name:  %(funcName)s - %(message)s')
+                
+                #info logger
+                
+                info_logger = logging.getLogger('info_logger')
+                info_logger.setLevel(logging.INFO)
+
+                _handler.setFormatter(_formatter)
+                info_logger.addHandler(_handler)
+
+                # error logger
+
+                error_logger = logging.getLogger('error_logger')
+                error_logger.setLevel(logging.ERROR)
+
+                _handler.setFormatter(_formatter)
+                error_logger.addHandler(_handler)
+                
+                # telegram logger
+                
+                telegram_logger = logging.getLogger('telegram_logger')
+                telegram_logger.setLevel(logging.INFO)
+
+                http_Handler = tgLog(
+                    chat=s._chat,
+                    key=s._key)
+
+                http_Handler.setFormatter(_formatter)
+
+                telegram_logger.addHandler(http_Handler)
+
+                return info_logger, error_logger, telegram_logger
+                </code>
+            </pre>
+            <p>
+                Info and Error loggers were logging into the same local file (when error occured or just logging info about the operation).
+            </p>
+            <p>
+                Telegram logger was sending alert and info into the group (just go and create a group in TG and get its details from your browser address line).
+            </p>
+            <p>
+                And my takeway from this was very important (and turned out the solution was easy): just initialize logger, add handler and formatter.
+                And they will help you A LOT and save tons of time.
+            </p>
+            <p>
+                <b>So easy and the value (result) is so great.</b>
+                That was the case where i realized why you need loggers and that actually it s not hard to implement even for the "coder" like me &#128540;
+            </p>
+            <h3>DDL</h3>
+            <p>
+                The next thing i had to do is to get the source table schema and reproduce the same table in the destination (my own DB) every time the 
+                schema changed (in the source of course).
+            </p>
+            <p>
+                So here is the DDL that perfectly works in PG SQL and grabs the DDL statement:
+            </p>
+            <pre>
+                <code class="language-css">
+                SELECT                                          
+                    'CREATE TABLE >' || relname || '< ( ' || array_to_string(
+                        array_agg(
+                            '_' || column_name || ' ' ||  type || ' '|| not_null
+                                )
+                            , ','
+                        ) || ')'
+                FROM (
+                
+                    SELECT 
+                        c.relname
+                        ,a.attname                                          column_name
+                        ,pg_catalog.format_type(a.atttypid, a.atttypmod)    type
+                        ,CASE 
+                            WHEN a.attnotnull
+                                THEN 'NOT NULL' 
+                            ELSE 'NULL' END                                 not_null 
+                    FROM pg_class c
+                        ,pg_attribute a
+                        ,pg_type t
+                    WHERE 1=1 
+                        AND c.relname = '{_table_name_}'
+                        AND a.attnum > 0
+                        AND a.attrelid = c.oid
+                        AND a.atttypid = t.oid
+                    ORDER BY a.attnum
+                    ) as tabledefinition
+                GROUP BY relname;
+                </code>
+            </pre>
+            <p>
+                <sub>
+                    * you can <a href="https://github.com/rusloc/PGMOVE/blob/main/config.ini" target="_blank"><b>grab</b></a> this code and use for your own purposes (it really works in PG SQL)
+                </sub>
+            </p>
+            <h2>The result</h2>
+            <p>
+                The result was fully automatic ETL tool that was spinning on VM (and scheduled via Cron) with:
+                <ul>
+                    <li>logging into local file that i could easily monitor and search for problems</li>
+                    <li>instant messages in telegram group</li>
+                    <li>automatic table recreation process (when the source table changed the destination table was replaced & repopulated accordingly)</li>
+                    <li>control over dataset i needed to have in my DB</li>
+                    
+                </ul>
+                
+            </p>
+            <p>
+                With this instrument on one side i could spend much-much more time on developing SQL views and producing BI reports. 
+            </p>
+
+                        
+                    </div> <!-- end entry content -->
+
+                </article> <!-- end column large-full entry-->
+
+
+       
+            </main>
+
+        </div> <!-- end s-content -->
+
+
+        <!-- footer
+        ================================================== -->
+        <footer class="s-footer footer">
+            <div class="row">
+                <div class="column large-full footer__content">
+                    <div class="footer__copyright">
+                        <span>© pimpmybi 2023</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"></a>
+            </div>
+        </footer>
+
+    </div> <!-- end s-wrap -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/plugins.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>
