@@ -303,45 +303,45 @@
                     </p>
             <pre>
                 <code class="language-css">
-            def set_loggers(s):
-            '''
-                Setup loggers: information logger, error logger & telegram logger
-                    Additional subclassed TG logger is required with mutated function.
-                '''
-                
-                _handler = logging.FileHandler('_etl_logger.txt', 'a')
-                _formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - func_name:  %(funcName)s - %(message)s')
-                
-                #info logger
-                
-                info_logger = logging.getLogger('info_logger')
-                info_logger.setLevel(logging.INFO)
+    def set_loggers(s):
+    '''
+        Setup loggers: information logger, error logger & telegram logger
+            Additional subclassed TG logger is required with mutated function.
+        '''
+        
+        _handler = logging.FileHandler('_etl_logger.txt', 'a')
+        _formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - func_name:  %(funcName)s - %(message)s')
+        
+        #info logger
+        
+        info_logger = logging.getLogger('info_logger')
+        info_logger.setLevel(logging.INFO)
 
-                _handler.setFormatter(_formatter)
-                info_logger.addHandler(_handler)
+        _handler.setFormatter(_formatter)
+        info_logger.addHandler(_handler)
 
-                # error logger
+        # error logger
 
-                error_logger = logging.getLogger('error_logger')
-                error_logger.setLevel(logging.ERROR)
+        error_logger = logging.getLogger('error_logger')
+        error_logger.setLevel(logging.ERROR)
 
-                _handler.setFormatter(_formatter)
-                error_logger.addHandler(_handler)
-                
-                # telegram logger
-                
-                telegram_logger = logging.getLogger('telegram_logger')
-                telegram_logger.setLevel(logging.INFO)
+        _handler.setFormatter(_formatter)
+        error_logger.addHandler(_handler)
+        
+        # telegram logger
+        
+        telegram_logger = logging.getLogger('telegram_logger')
+        telegram_logger.setLevel(logging.INFO)
 
-                http_Handler = tgLog(
-                    chat=s._chat,
-                    key=s._key)
+        http_Handler = tgLog(
+            chat=s._chat,
+            key=s._key)
 
-                http_Handler.setFormatter(_formatter)
+        http_Handler.setFormatter(_formatter)
 
-                telegram_logger.addHandler(http_Handler)
+        telegram_logger.addHandler(http_Handler)
 
-                return info_logger, error_logger, telegram_logger
+        return info_logger, error_logger, telegram_logger
                 </code>
             </pre>
             <p>
@@ -368,34 +368,34 @@
             </p>
             <pre>
                 <code class="language-css">
-                SELECT                                          
-                    'CREATE TABLE >' || relname || '< ( ' || array_to_string(
-                        array_agg(
-                            '_' || column_name || ' ' ||  type || ' '|| not_null
-                                )
-                            , ','
-                        ) || ')'
-                FROM (
-                
-                    SELECT 
-                        c.relname
-                        ,a.attname                                          column_name
-                        ,pg_catalog.format_type(a.atttypid, a.atttypmod)    type
-                        ,CASE 
-                            WHEN a.attnotnull
-                                THEN 'NOT NULL' 
-                            ELSE 'NULL' END                                 not_null 
-                    FROM pg_class c
-                        ,pg_attribute a
-                        ,pg_type t
-                    WHERE 1=1 
-                        AND c.relname = '{_table_name_}'
-                        AND a.attnum > 0
-                        AND a.attrelid = c.oid
-                        AND a.atttypid = t.oid
-                    ORDER BY a.attnum
-                    ) as tabledefinition
-                GROUP BY relname;
+    SELECT                                          
+        'CREATE TABLE >' || relname || '< ( ' || array_to_string(
+            array_agg(
+                '_' || column_name || ' ' ||  type || ' '|| not_null
+                    )
+                , ','
+            ) || ')'
+    FROM (
+    
+        SELECT 
+            c.relname
+            ,a.attname                                          column_name
+            ,pg_catalog.format_type(a.atttypid, a.atttypmod)    type
+            ,CASE 
+                WHEN a.attnotnull
+                    THEN 'NOT NULL' 
+                ELSE 'NULL' END                                 not_null 
+        FROM pg_class c
+            ,pg_attribute a
+            ,pg_type t
+        WHERE 1=1 
+            AND c.relname = '{_table_name_}'
+            AND a.attnum > 0
+            AND a.attrelid = c.oid
+            AND a.atttypid = t.oid
+        ORDER BY a.attnum
+        ) as tabledefinition
+    GROUP BY relname;
                 </code>
             </pre>
             <p>
