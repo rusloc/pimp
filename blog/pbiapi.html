@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+
+    <!-- Google Tag Manager -->
+<script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TJ6T895');
+</script>
+    <!-- End Google Tag Manager -->
+
+
+<!-- python code formatter -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script> 
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Power BI API (Python way)</title>
+    <meta name="description" content="Power BI API via Python application.">
+    <meta name="author" content="Kirill Bezzubkin">
+    <meta name="keywords" content="python, power bi, api, analytics, reporting, business intelligence">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/vendor.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="../js/modernizr.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/chart-2-svgrepo-com.svg">
+    <link rel="manifest" href="site.webmanifest">
+
+</head>
+
+<body class="ss-bg-white">
+
+
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ6T895"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div id="top" class="s-wrap site-wrapper"></div>
+         <!-- site header
+        ================================================== -->
+        <header class="s-header">
+
+            <div class="header__top">
+                <div class="header__logo">
+                    <a class="site-logo" href="../index.html">
+                        <p class="mainLogo">pimp.my.bi</p>
+                    </a>
+                </div>
+            </div> <!-- end header__top -->
+
+            <nav class="header__nav-wrap">
+
+                <ul class="header__nav">
+                    <li><a href="../index.html" title="">Home</a></li>
+                    <li><a href="../page-about.html" title="">About</a></li>
+                    <li><a href="../page-contact.html" title="">Contact</a></li>
+                </ul> <!-- end header__nav -->
+
+                <ul class="header__social">
+                    <li class="ss-linked">
+                        <a href="https://www.linkedin.com/in/kirill-bezzubkin-b6860b235">
+                            <span class="screen-reader-text">Linkedin</span>
+                        </a>
+                    </li>
+                    <li class="ss-facebook">
+                        <a href="https://www.facebook.com">
+                            <span class="screen-reader-text">Facebook</span>
+                        </a>
+                    </li>
+                    <li class="ss-upwork">
+                        <a href="https://www.upwork.com/freelancers/~011afab395f15a047f">
+                            <span class="screen-reader-text">Upwork</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav> <!-- end header__nav-wrap -->
+
+            <!-- menu toggle -->
+            <a href="#0" class="header__menu-toggle">
+                <span>Menu</span>
+            </a>
+
+        </header> 
+        <!-- end s-header -->
+
+
+        <!-- search-block -->
+        <div class="s-search">
+
+            <div class="search-block">
+    
+                <form role="search" method="get" class="search-form" action="#">
+                    <label>
+                        <span class="hide-content">Ping me in <a href="http://www.t.me/cirob">Telegram</a> or send <a class="popupLink" href="mailto: pimp.my.bi@gmail.com">Email</a></span>
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+    
+                <a href="#0" title="Close Search" class="search-close">Close</a>
+    
+            </div> 
+        <!-- end search-block -->
+
+            <!-- search modal trigger -->
+            <a href="#0" class="search-trigger">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"></path></svg> -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <g> <path fill="none" d="M0 0h24v24H0z"/> <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"/> </g> </svg>  
+                <span>contact</span>
+            </a>
+            <span class="search-line"></span>
+
+        </div> 
+        <!-- end s-search -->
+
+
+        <!-- site content
+        ================================================== -->
+        <div class="s-content content">
+            <main class="row content__page">
+                
+                <article class="column large-full entry format-standard">
+
+                    <div class="content__page-header entry__header">
+                        <h1 class="display-1 entry__title">
+                            Power BI API utilization with Python. Easy peezee...
+                        </h1>
+
+                    </div> 
+
+                    <!-- <div class="media-wrap entry__media">
+                        <div class="entry__post-thumb">
+                            <img src="../images/thumbs/time_funnel/funnel_chart_preview_1000.png" 
+                                 srcset="../images/thumbs/time_funnel/funnel_chart_preview_2000.png 2000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_1000.png 1000w, 
+                                 ../images/thumbs/time_funnel/funnel_chart_preview_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                    </div> -->
+                    
+                    <!-- end entry__header -->
+
+                    <div class="entry__content">
+
+                        <p class="lead drop-cap">
+                        Suddenly (sarcasm) Power BI has an API that s really useful and in this post i ll share my experience using it. Long story short: it s very easy and extremely useful.
+                        
+                        </p>
+
+                        <h2 id="github_repo">Home made Python class is here*:</h2>
+                        <p>
+                            Click and just copy:
+                            <a href="https://github.com/rusloc/PBI" target="_blank"><b>github.com/rusloc/PBI</b></a>
+                            <br>
+                            <sub>
+                                
+                                    * very simple Python class (basically a script packed in a pill).
+                                
+                            </sub>
+                        </p>
+
+                        <p>
+                            <h1>Process structure</h1>
+                            <ul>
+                            
+                                    <li><a href="#app-setup"><b>App Setup</b></a></li>
+                                    <li><a href="#security-group"><b>Security group Setup</b></a></li>
+                                    <li><a href="#powerbi"><b>Power BI Setup</b></a></li>
+                                    <li><a href="#code"><b>Data retrieval</b></a></li>
+
+                            </ul>
+                            Generally the process looks like this: 
+                            
+                            you create an app, generate secret, create a security group, add your app to the security group, setup your PBI workspace 
+                            and run the code againt the API.
+                            <br>
+                            Lets start with the basic app setup.
+                        </p>
+
+
+
+                        <h2 id="app-setup">App Setup</h2>
+    
+                        <p>
+                            Go to: <a href="https://portal.azure.com/" target="_blank"><b>https://portal.azure.com/</b></a>
+                            <br> Of course you need a paid Power BI account to proceed (simple PBI pro account will do).
+                            <br>
+                            Once you register (login) into your Azure account you ll see something like this:
+
+                            <div class="media-wrap" id="screenOne">
+                                <div>
+                                    <img src="../blog/images/pbiapi/azure_login_1200.png" srcset="../blog/images/pbiapi/azure_login_1200.png 1200w, 
+                                    ../blog/images/pbiapi/azure_login_800.png 800w, 
+                                    ../blog/images/pbiapi/azure_login_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 1</i>
+                            </div>
+
+                        </p>
+                        <p>
+                            In the middle of the page you ll see a big block <b> "Azure services"</b>. In this one you ll need <b> "App registrations"</b> specifically.
+                            <br>
+                            Click...
+                        </p>
+                        <p>
+                        <div class="media-wrap" id="screenTwo">
+                            <div>
+                                <img src="../blog/images/pbiapi/app_reg_1200.png" srcset="../blog/images/pbiapi/app_reg_1200.png 1200w, 
+                                ../blog/images/pbiapi/app_reg_800.png 800w, 
+                                ../blog/images/pbiapi/app_reg_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                            </div>
+                            <i>>>> screen 2</i>
+                        </div>
+
+                        
+                        You ll see a new page with listed applications (if there are any in your Azure account). Most likely you will want / need to register a new app. 
+                        A straight forward step: just find a button <b>"New registration"</b> and go through the steps (the button is in the upper left corner).
+
+
+                        </p>
+                        <p>
+                            
+                            <ul>Enter some info:
+                                <li>Name: whatever you want</li>
+                                <li>Supported account types: most likely you ll need the first option with single tenant</li>
+                                <li>Redirect URI: since it s optional you may leave it blank</li>
+                            </ul>
+                        <p>
+                            <div class="media-wrap" id="screenThree">
+                                <div>
+                                    <img src="../blog/images/pbiapi/app_setup_1200.png" srcset="../blog/images/pbiapi/app_setup_1200.png 1200w, 
+                                    ../blog/images/pbiapi/app_setup_800.png 800w, 
+                                    ../blog/images/pbiapi/app_setup_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 3</i>
+                            </div>
+                        </p>
+                            Finally just click <b>Register</b> at the bottom of the page.
+                        </p>
+                        <p>
+                            Now that we have the app (hopefully the above steps should not be a problem), we need to do a few more steps to be able to run Python code against PBI API.
+                            See the screen below: this is a basic view of the APP settings (most likely you will see something like that). 
+                            Now we need to get <b>CLIENT SECRET</b> and <b>CLIENT KEY</b>.
+                        </p>
+                        <p>
+                            <div class="media-wrap" id="screenFour">
+                                <div>
+                                    <img src="../blog/images/pbiapi/sample_app_1200.png" srcset="../blog/images/pbiapi/sample_app_1200.png 1200w, 
+                                    ../blog/images/pbiapi/sample_app_800.png 800w, 
+                                    ../blog/images/pbiapi/sample_app_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 4</i>
+                            </div>
+                        </p>
+                            Before proceeding, we need to save a few keys: <b>Application (client) ID</b> and <b>Directory (tenant) ID</b>. Both of them you will find 
+                            in the middle of your screen (just under <b>Essentials</b> section.)
+                            <br>
+                            After saving those two IDs we now can go and get these two guys: <b>CLIENT SECRET</b> and <b>CLIENT KEY</b>.
+                            To do that: expand the <b>MANAGE</b> section (on the left pane).
+                            Once you expand the section you will see the screen:
+                        <p>
+                            <div class="media-wrap" id="screenFive">
+                                <div>
+                                    <img src="../blog/images/pbiapi/app_secret_1200.png" srcset="../blog/images/pbiapi/app_secret_1200.png 1200w, 
+                                    ../blog/images/pbiapi/app_secret_800.png 800w, 
+                                    ../blog/images/pbiapi/app_secret_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 5</i>
+                            </div>
+                        </p>
+                        This step is also pretty simple: just find <b>Certificates & secrets</b> menu option under <b>Manage</b> section and press <b>New client secret</b>. 
+                        You will see a pop-up window on the left side of the screen: there will be a few options like Description and life-span of the secret key.
+
+                            <p>
+                                <div class="media-wrap" id="screenSix">
+                                    <div>
+                                        <img src="../blog/images/pbiapi/set_secret_1200.png" srcset="../blog/images/pbiapi/set_secret_1200.png 1200w, 
+                                        ../blog/images/pbiapi/set_secret_800.png 800w, 
+                                        ../blog/images/pbiapi/set_secret_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                    </div>
+                                    <i>>>> screen 6</i>
+                                </div>
+                            </p>
+                        
+                        <p>
+                            Now we need to get those secret values. There might be a little confusion on this step so let me tell you:
+
+                            Just right when you click <b>Add</b> button in the pop-up window you will be able to see the <b>Value</b> of the <b>Secret ID</b>. So DO NOT
+                            rush. Copy and save those two: <b>Secret ID</b> and <b>Value</b>. 
+                            <br>
+                            
+
+                        </p>
+
+
+                        <h2 id="security-group">Security Group Setup</h2>
+                        <p>
+                            Now we need to refer to <b><a href="#screenOne">[screen 1]</a></b>: find the <b>Groups</b> section in the menu and click.
+                            If you fail to find the <b>Group</b> section then just seach for one:
+
+                        </p>
+
+
+                        <p>
+                            <div class="media-wrap" id="screenSeven">
+                                <div>
+                                    <img src="../blog/images/pbiapi/group_setup_1200.png" srcset="../blog/images/pbiapi/group_setup_1200.png 1200w, 
+                                    ../blog/images/pbiapi/group_setup_800.png 800w, 
+                                    ../blog/images/pbiapi/group_setup_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 7</i>
+                            </div>
+                        </p>
+
+                        <p>
+                            Once you get to the <b>Group</b> page you ll need to select <b>All groups</b> and then click in the top <b>New group</b>.
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenEight">
+                                <div>
+                                    <img src="../blog/images/pbiapi/new_group_1200.png" srcset="../blog/images/pbiapi/new_group_1200.png 1200w, 
+                                    ../blog/images/pbiapi/new_group_800.png 800w, 
+                                    ../blog/images/pbiapi/new_group_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <i>>>> screen 8</i>
+                            </div>
+                        </p>
+
+                        <p>
+                            And then register a new security group. This step is also very simple: just select the group type <b>Security</b>, give it a name and at the bottom select 
+                            the <b>Owner</b> and add your app as <b>Member</b> (you will be able to find the Owner name and Member name through the search).
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenNine">
+                                <div>
+                                    <img src="../blog/images/pbiapi/reg_group_1200.png" srcset="../blog/images/pbiapi/reg_group_1200.png 1200w, 
+                                    ../blog/images/pbiapi/reg_group_800.png 800w, 
+                                    ../blog/images/pbiapi/reg_group_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <br>
+                                <i>>>> screen 9</i>
+                            </div>
+                        </p>
+                        <p>
+                            Now that we have our app and security (with app as a member) we need to setup the workspace to allow app to connect to report and semantic models.
+
+                        </p>
+                        <h2 id="powerbi">Power BI setup</h2>
+
+                        <p>
+                            Head to your Power BI account and open the workspace you want to connect to. Once there you need now to save your <b>Workspace ID</b> 
+                            (note: workspaces are refered to as <b>Groups</b> in Power BI terminology). 
+                            So to find your "workspace ID / group" check the URL in your browser: just right after ".../groups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" you will find 
+                            that <b>Workspace ID</b>. Save it.
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenTen">
+                                <div>
+                                    <img src="../blog/images/pbiapi/workspace_id_1200.png" srcset="../blog/images/pbiapi/workspace_id_1200.png 1200w, 
+                                    ../blog/images/pbiapi/workspace_id_800.png 800w, 
+                                    ../blog/images/pbiapi/workspace_id_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <br>
+                                <i>>>> screen 10</i>
+                            </div>
+                        </p>
+                        <p>
+                            Now that we have the final ID in our combo we need to setup the Power BI side to allow the App to communicate with the service.
+                            Refer to the screen above (<b>screen 10</b>) and click the Gear icon in the upper right corner (also highlighted on the screen).
+                            Once clicked you ll see a side pop-up menu where you need to select <b>Admin portal<for the <b>Security group</b> you created. So to be clear <b>Service principals can access read-only admin APIs</b>
+                        </p>
+                        <p>
+                            So in <b>Admin portal</b> you need the very first section <b>Tenant setting</b> (the first on the left side menu). In this section you need to find
+                            two subsections: <b>Developer settings</b> and <b>Admin API settings</b>. 
+                            See the screen:
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenEleven">
+                                <div>
+                                    <img src="../blog/images/pbiapi/api_enable_1200.png" srcset="../blog/images/pbiapi/api_enable_1200.png 1200w, 
+                                    ../blog/images/pbiapi/api_enable_800.png 800w, 
+                                    ../blog/images/pbiapi/api_enable_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <br>
+                                <i>>>> screen 11</i>
+                            </div>
+                        </p>
+
+                        <p>
+                            You need to <b>Enable</b> both of these subsections for the <b>Security group</b> you created. 
+                            So to be clear <b>Service principals can access read-only admin APIs</b> allows to access <b>Admin</b> options (eg. Power BI users' names etc.).
+                            <b>Service principals can use Fabric APIs</b> allows basic access (like getting a list of reports, semantic models and refresh start etc.).
+                        </p>
+                        <p>
+                            One more option i would recommend to <b>Enable</b> is: 
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenTwelve">
+                                <div>
+                                    <img src="../blog/images/pbiapi/dax_enable_1200.png" srcset="../blog/images/pbiapi/dax_enable_1200.png 1200w, 
+                                    ../blog/images/pbiapi/dax_enable_800.png 800w, 
+                                    ../blog/images/pbiapi/dax_enable_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <br>
+                                <i>>>> screen 12</i>
+                            </div>
+                        </p>
+                        <p>
+                            I found it very useful since you can just send your DAX query via API call and get table/value from your model.
+                            Think of this option as of quering a DWH you created (aka semantic model). You dont need to reimplement logic in SQL again (you can just use 
+                            already existing measure to get the data needed).
+                        </p>
+                        <h2 id="code">Data retrieval</h2>
+                        <p>
+                            So that said, i hope you enabled these features and now you can control your datasets and query them programmatically.
+                            You can grab the script <b><a href="#github_repo">here</a></b> and run it. Just plug your <b>client_key, client_secret, workspace_id and tenant_id</b>.
+                            Thigs you can do now are:
+                            <ul>
+                                <li>Refresh dataset whenever you want with minute precision (with Airflow for example)</li>
+                                <li>Create que of refreshes (most likely with Airflow as well)</li>
+                                <li>Control the list of your reports and semantic models</li>
+                                <li>Trace refreshes and keep a track of them in your local DWH</li>
+                                <li>Control user list (workspace, app)</li>
+                                <li>Query dataset using DAX (one of my favs features)</li>
+                            </ul>
+                        </p>
+                        <p>
+                            One thing to note is that you need to import the following Python packages:
+                        <pre>
+                            <code class="python">
+        import requests
+        import json
+        from datetime import datetime as dt
+        from datetime import timedelta as td
+
+        client_key = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        client_secret = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        workspace_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        tenant_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" 
+        
+        power_bi_client = PowerBIClient(client_key, client_secret, workspace_id, tenant_id)
+
+        power_bi_client.get_reports()
+                                </code>
+                            </pre>
+
+                        </p>
+                        
+                    </div> <!-- end entry content -->
+
+                </article> <!-- end column large-full entry-->
+
+
+       
+            </main>
+
+        </div> <!-- end s-content -->
+
+
+        <!-- footer
+        ================================================== -->
+        <footer class="s-footer footer">
+            <div class="row">
+                <div class="column large-full footer__content">
+                    <div class="footer__copyright">
+                        <span>© pimpmybi 2024</span> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"></a>
+            </div>
+        </footer>
+
+    </div> <!-- end s-wrap -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/plugins.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>

@@ -1350,9 +1350,9 @@ body[data-aos-easing=ease-in-out-quart] [data-aos] {
     font-size          : 14px;
     font-family        : Arial, Helvetica, sans-serif;
     opacity            : 0;
-    -webkit-transition : opacity 0.3s ease;
-    -o-transition      : opacity 0.3s ease;
-    transition         : opacity 0.3s ease;
+    -webkit-transition : opacity 0.1s ease;
+    -o-transition      : opacity 0.1s ease;
+    transition         : opacity 0.1s ease;
 }
 
 .lity-loading .lity-loader {
