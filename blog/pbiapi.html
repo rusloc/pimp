@@ -201,6 +201,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                                     <li><a href="#app-setup"><b>App Setup</b></a></li>
                                     <li><a href="#security-group"><b>Security group Setup</b></a></li>
                                     <li><a href="#powerbi"><b>Power BI Setup</b></a></li>
+                                    <li><a href="#workspace"><b>Workspace access</b></a></li>
                                     <li><a href="#code"><b>Data retrieval</b></a></li>
 
                             </ul>
@@ -213,6 +214,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                         </p>
 
 
+
+
+<!-- APP SETUP SECTION -->
 
                         <h2 id="app-setup">App Setup</h2>
     
@@ -328,6 +332,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                         </p>
 
 
+
+
+
+<!-- SECURITY GROUP SETUP SECTION -->
                         <h2 id="security-group">Security Group Setup</h2>
                         <p>
                             Now we need to refer to <b><a href="#screenOne">[screen 1]</a></b>: find the <b>Groups</b> section in the menu and click.
@@ -382,6 +390,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                             Now that we have our app and security (with app as a member) we need to setup the workspace to allow app to connect to report and semantic models.
 
                         </p>
+
+
+
+
+<!-- PBI SETUP SECTION -->
                         <h2 id="powerbi">Power BI setup</h2>
 
                         <p>
@@ -450,6 +463,44 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                             Think of this option as of quering a DWH you created (aka semantic model). You dont need to reimplement logic in SQL again (you can just use 
                             already existing measure to get the data needed).
                         </p>
+
+
+
+
+<!-- WORKSPACE ACCESS SECTION -->
+
+                        <h2 id="workspace">Workspace access</h2>
+
+                        <p>
+                            Last tiny thing we need to do before we can start querying PBI API is add our App (aka Service Principal) to the workspace. To do so: go to your
+                            workspace and find the <b>Manage access</b> button  (in the upper right corner). After pressing you will get a pop up window where you need to click 
+                            <b>Add people or groups</b>. And there you can just type in the name of the previously created App (auto search will help you). If you need <b>read-only access</b>
+                            you can select <b>Viewer</b> role. But i suppose you would want to select a <b>Contributor</b> role (to be able to refresh datasets).
+                        </p>
+
+                        <p>
+                            <div class="media-wrap" id="screenThirteen">
+                                <div>
+                                    <img src="../blog/images/pbiapi/workspace_1200.png" srcset="../blog/images/pbiapi/workspace_1200.png 1200w, 
+                                    ../blog/images/pbiapi/workspace_800.png 800w, 
+                                    ../blog/images/pbiapi/workspace_500.png 500w" sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                                </div>
+                                <br>
+                                <i>>>> screen 13</i>
+                            </div>
+                            After you ve added your App to the workspace you now have done everything you need to allow the app to communicate with API. And now you can proceed to 
+                            Python.
+                        </p>
+
+                            
+
+
+
+
+
+<!-- DATA RETRIEVAL SECTION -->
+
+
                         <h2 id="code">Data retrieval</h2>
                         <p>
                             So that said, i hope you enabled these features and now you can control your datasets and query them programmatically.
@@ -468,6 +519,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
                             One thing to note is that you need to import the following Python packages:
                         <pre>
                             <code class="python">
+        
+        import PowerBIClient 
         import requests
         import json
         from datetime import datetime as dt
@@ -480,10 +533,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.
         
         power_bi_client = PowerBIClient(client_key, client_secret, workspace_id, tenant_id)
 
-        power_bi_client.get_reports()
+        reports = power_bi_client.get_reports()
+
+        report_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        users = power_bi_client.get_report_users(report_id)
+        
                                 </code>
                             </pre>
 
+                    I would recommend you to try either my class or your own. But anyway try the PBI API.
+        
                         </p>
                         
                     </div> <!-- end entry content -->
